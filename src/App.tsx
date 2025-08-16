@@ -18,7 +18,7 @@ const pageVariants = {
 const pageTransition = {
   type: 'tween' as const,
   ease: 'anticipate' as const,
-  duration: 0.3
+  duration: 0.15
 };
 
 export function App() {

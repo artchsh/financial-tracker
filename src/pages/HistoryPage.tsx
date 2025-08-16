@@ -17,7 +17,7 @@ const cardVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.3 }
+    transition: { duration: 0.15 }
   }
 };
 
@@ -60,7 +60,7 @@ export function HistoryPage() {
         className="mb-2 font-large font-bold"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.3 }}
       >
         Budget History
       </motion.h1>
@@ -100,7 +100,7 @@ export function HistoryPage() {
                 whileHover={{ 
                   scale: 1.02,
                   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.1 }
                 }}
                 whileTap={{ scale: 0.98 }}
               >

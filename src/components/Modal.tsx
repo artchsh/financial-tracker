@@ -22,7 +22,7 @@ const modalVariants = {
       type: 'spring' as const,
       damping: 25,
       stiffness: 500,
-      duration: 0.3
+      duration: 0.15
     }
   },
   exit: {
@@ -30,7 +30,7 @@ const modalVariants = {
     scale: 0.8,
     y: -50,
     transition: {
-      duration: 0.2
+      duration: 0.1
     }
   }
 };
@@ -39,11 +39,11 @@ const overlayVariants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.1 }
   },
   exit: { 
     opacity: 0,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.1 }
   }
 };
 

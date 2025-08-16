@@ -22,8 +22,8 @@ const formVariants = {
     opacity: 1, 
     y: 0,
     transition: {
-      duration: 0.3,
-      staggerChildren: 0.1
+      duration: 0.15,
+      staggerChildren: 0.05
     }
   }
 };
@@ -33,7 +33,7 @@ const fieldVariants = {
   visible: { 
     opacity: 1, 
     x: 0,
-    transition: { duration: 0.3 }
+    transition: { duration: 0.15 }
   }
 };
 
@@ -45,15 +45,15 @@ const colorVariants = {
   selected: { 
     scale: 1.1,
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-    transition: { duration: 0.2 }
+    transition: { duration: 0.1 }
   },
   hover: { 
     scale: 1.05,
-    transition: { duration: 0.15 }
+    transition: { duration: 0.075 }
   },
   tap: { 
     scale: 0.95,
-    transition: { duration: 0.1 }
+    transition: { duration: 0.05 }
   }
 };
 
@@ -125,7 +125,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             placeholder="e.g., Food, Transport"
             autoFocus
             whileFocus={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           />
         </motion.div>
 
@@ -140,7 +140,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             min="0"
             step="0.01"
             whileFocus={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           />
         </motion.div>
 
@@ -155,7 +155,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             min="0"
             step="0.01"
             whileFocus={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           />
         </motion.div>
 

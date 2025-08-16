@@ -13,23 +13,23 @@ const navItemVariants = {
   inactive: { 
     scale: 1,
     opacity: 0.7,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.1 }
   },
   active: { 
     scale: 1.1,
     opacity: 1,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.1 }
   },
   tap: { 
     scale: 0.95,
-    transition: { duration: 0.1 }
+    transition: { duration: 0.05 }
   }
 };
 
 const iconVariants = {
   inactive: { rotate: 0 },
-  active: { rotate: [0, -10, 10, 0], transition: { duration: 0.5 } },
-  hover: { scale: 1.2, transition: { duration: 0.2 } }
+  active: { rotate: [0, -10, 10, 0], transition: { duration: 0.25 } },
+  hover: { scale: 1.2, transition: { duration: 0.1 } }
 };
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {

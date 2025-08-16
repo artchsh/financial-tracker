@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Download, FileText, Upload, Trash2 } from 'lucide-react';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
+import { Dropdown } from '../components/Dropdown';
 
 const settingsVariants = {
   hidden: { opacity: 0 },
@@ -20,7 +21,7 @@ const cardVariants = {
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { duration: 0.4 }
+    transition: { duration: 0.2 }
   }
 };
 
@@ -41,6 +42,11 @@ export function SettingsPage() {
     }
   };
 
+  const currencyOptions = CURRENCIES.map(currency => ({
+    value: currency.code,
+    label: `${currency.symbol} ${currency.name} (${currency.code})`
+  }));
+
   const handleRetentionChange = (months: number) => {
     const newSettings: AppSettings = {
       ...state.settings,
@@ -48,6 +54,14 @@ export function SettingsPage() {
     };
     updateSettings(newSettings);
   };
+
+  const retentionOptions = [
+    { value: '3', label: '3 months' },
+    { value: '6', label: '6 months' },
+    { value: '12', label: '12 months' },
+    { value: '24', label: '24 months' },
+    { value: '36', label: '36 months' }
+  ];
 
   const handleExportFormatted = async () => {
     try {
@@ -201,7 +215,7 @@ export function SettingsPage() {
         className="mb-2 font-large font-bold"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.3 }}
       >
         Settings
       </motion.h1>
@@ -211,17 +225,11 @@ export function SettingsPage() {
         <h2 className="mb-1 font-bold">Currency</h2>
         <div className="form-group">
           <label className="form-label">Display Currency</label>
-          <select
-            className="select"
+          <Dropdown
+            options={currencyOptions}
             value={state.settings.currency.code}
-            onChange={(e) => handleCurrencyChange(e.target.value)}
-          >
-            {CURRENCIES.map(currency => (
-              <option key={currency.code} value={currency.code}>
-                {currency.symbol} {currency.name} ({currency.code})
-              </option>
-            ))}
-          </select>
+            onChange={handleCurrencyChange}
+          />
         </div>
       </motion.div>
 
@@ -230,17 +238,11 @@ export function SettingsPage() {
         <h2 className="mb-1 font-bold">History</h2>
         <div className="form-group">
           <label className="form-label">Keep history for (months)</label>
-          <select
-            className="select"
-            value={state.settings.historyRetentionMonths}
-            onChange={(e) => handleRetentionChange(parseInt(e.target.value))}
-          >
-            <option value={3}>3 months</option>
-            <option value={6}>6 months</option>
-            <option value={12}>12 months</option>
-            <option value={24}>24 months</option>
-            <option value={36}>36 months</option>
-          </select>
+          <Dropdown
+            options={retentionOptions}
+            value={state.settings.historyRetentionMonths.toString()}
+            onChange={(value) => handleRetentionChange(parseInt(value))}
+          />
         </div>
         <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
           Currently storing {state.budgets.length} month{state.budgets.length !== 1 ? 's' : ''} of data
@@ -331,7 +333,7 @@ export function SettingsPage() {
         <h2 className="mb-1 font-bold">About</h2>
         <div style={{ fontSize: '0.9rem', color: '#666' }}>
           <p><strong>Financial Tracker PWA</strong></p>
-          <p>Version 1.1.0</p>
+          <p>Version 1.2.4</p>
           <p className="mt-1">Built with React and IndexedDB for offline use</p>
           <p className="mt-1">✅ Works offline</p>
           <p>✅ Mobile optimized</p>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context';
+import { Dropdown } from './Dropdown';
 
 interface MonthPickerProps {
   currentMonth: string;
@@ -51,18 +52,12 @@ export function MonthPicker({ currentMonth, onMonthChange }: MonthPickerProps) {
   return (
     <div className="form-group">
       <label className="form-label">Month</label>
-      <select
-        className="select"
+      <Dropdown
+        options={generateMonthOptions()}
         value={currentMonth}
-        onChange={(e) => handleMonthChange(e.target.value)}
+        onChange={handleMonthChange}
         disabled={isCreating}
-      >
-        {generateMonthOptions().map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      />
       {isCreating && (
         <div className="mt-1" style={{ fontSize: '0.9rem', color: '#666' }}>
           Creating budget from previous month...

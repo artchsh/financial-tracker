@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Edit2, Trash2 } from 'lucide-react';
 import { Category } from '../types';
 import { useApp } from '../context';
+import { ActionMenu } from './ActionMenu';
 
 interface CategoryCardProps {
   category: Category;
@@ -31,30 +33,12 @@ const cardVariants = {
   }
 };
 
-const actionsVariants = {
-  hidden: { 
-    opacity: 0, 
-    height: 0,
-    transition: {
-      duration: 0.2
-    }
-  },
-  visible: { 
-    opacity: 1, 
-    height: 'auto',
-    transition: {
-      duration: 0.3,
-      ease: 'easeOut' as const
-    }
-  }
-};
-
 const progressVariants = {
   initial: { width: 0 },
   animate: (width: number) => ({
     width: `${width}%`,
     transition: {
-      duration: 0.8,
+      duration: 0.4,
       ease: 'easeOut' as const
     }
   })
@@ -62,11 +46,30 @@ const progressVariants = {
 
 export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
   const { formatCurrency } = useApp();
-  const [showActions, setShowActions] = useState(false);
 
   const remaining = category.allocated - category.spent;
   const isOverspent = category.spent > category.allocated;
   const spentPercentage = category.allocated > 0 ? (category.spent / category.allocated) * 100 : 0;
+
+  const actionItems = [
+    {
+      key: 'edit',
+      label: 'Edit',
+      icon: <Edit2 size={16} />,
+      onClick: () => onEdit(category)
+    },
+    {
+      key: 'delete',
+      label: 'Delete',
+      icon: <Trash2 size={16} />,
+      variant: 'danger' as const,
+      onClick: () => {
+        if (window.confirm(`Delete category "${category.name}"?`)) {
+          onDelete(category.id);
+        }
+      }
+    }
+  ];
 
   return (
     <motion.div 
@@ -87,61 +90,12 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
               borderRadius: '50%'
             }}
             whileHover={{ scale: 1.2 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.1 }}
           />
           <h3 className="font-bold">{category.name}</h3>
         </div>
-        <motion.button
-          className="button button-circle"
-          style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
-          onClick={() => setShowActions(!showActions)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          animate={{ rotate: showActions ? 90 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          ⋯
-        </motion.button>
+        <ActionMenu items={actionItems} />
       </div>
-
-      <AnimatePresence>
-        {showActions && (
-          <motion.div 
-            className="flex gap-1 mb-2"
-            variants={actionsVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            <motion.button
-              className="button button-secondary"
-              style={{ padding: '0.5rem', fontSize: '0.8rem', flex: 1 }}
-              onClick={() => {
-                onEdit(category);
-                setShowActions(false);
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Edit
-            </motion.button>
-            <motion.button
-              className="button button-danger"
-              style={{ padding: '0.5rem', fontSize: '0.8rem', flex: 1 }}
-              onClick={() => {
-                if (window.confirm(`Delete category "${category.name}"?`)) {
-                  onDelete(category.id);
-                }
-                setShowActions(false);
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Delete
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <motion.div className="mb-1" layout>
         <div className="flex flex-between mb-1">
@@ -151,7 +105,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             key={category.allocated}
             initial={{ scale: 1.2, color: '#000' }}
             animate={{ scale: 1, color: '#000' }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
             {formatCurrency(category.allocated)}
           </motion.span>
@@ -164,7 +118,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             key={category.spent}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
             {formatCurrency(category.spent)}
           </motion.span>
@@ -177,7 +131,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             key={remaining}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.15 }}
           >
             {formatCurrency(remaining)}
           </motion.span>
