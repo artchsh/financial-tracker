@@ -165,8 +165,8 @@ export function MainPage() {
         <div className="flex flex-between mb-1 align-center">
           <h2 className="font-bold">Monthly Limit</h2>
           <motion.button
-            className="button button-secondary"
-            style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
+            className="button"
+            style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', background: 'none', color: 'black' }}
             onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

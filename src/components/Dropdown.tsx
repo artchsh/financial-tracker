@@ -45,7 +45,7 @@ const optionVariants = {
   },
   hover: {
     backgroundColor: '#f5f5f5',
-    x: 4,
+    x: 0,
     transition: { duration: 0.05 }
   }
 };
@@ -94,7 +94,7 @@ export function Dropdown({ options, value, onChange, placeholder = "Select...", 
         disabled={disabled}
         whileTap={{ scale: disabled ? 1 : 0.98 }}
         animate={{ 
-          borderColor: isOpen ? '#000' : '#ccc',
+          borderColor: isOpen ? '#aaa' : '#ccc',
         }}
         transition={{ duration: 0.1 }}
       >

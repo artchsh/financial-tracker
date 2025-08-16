@@ -105,6 +105,7 @@ export function ActionMenu({ items, trigger, className = "" }: ActionMenuProps) 
   const defaultTrigger = (
     <motion.button
       className="button button-circle action-menu-trigger"
+      
       onClick={() => setIsOpen(!isOpen)}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
@@ -113,6 +114,7 @@ export function ActionMenu({ items, trigger, className = "" }: ActionMenuProps) 
       <motion.div
         animate={{ rotate: isOpen ? 90 : 0 }}
         transition={{ duration: 0.1 }}
+        style={{ height: "16px" }}
       >
         <MoreVertical size={16} />
       </motion.div>
@@ -132,7 +134,7 @@ export function ActionMenu({ items, trigger, className = "" }: ActionMenuProps) 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className={`action-menu ${menuPosition === 'left' ? 'action-menu-left' : ''}`}
+            className={`action-menu ${menuPosition === 'left' ? 'action-menu-right' : 'action-menu-left'}`}
             variants={menuVariants}
             initial="hidden"
             animate="visible"

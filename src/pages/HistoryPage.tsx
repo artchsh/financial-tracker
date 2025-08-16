@@ -92,7 +92,7 @@ export function HistoryPage() {
                 key={budget.month} 
                 className="card"
                 style={{ 
-                  border: isCurrentMonth ? '1px solid #aaaaaaff' : '1px solid #e0e0e0',
+                  border: isCurrentMonth ? '1px solid #aaa' : '1px solid #e0e0e0',
                   cursor: 'pointer'
                 }}
                 onClick={() => handleViewMonth(budget.month)}
