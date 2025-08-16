@@ -102,11 +102,11 @@ export function SettingsPage() {
 
   return (
     <div>
-      <h1 className="font-bold font-large mb-2">Settings</h1>
+      <h1 className="mb-2 font-large font-bold">Settings</h1>
 
       {/* Currency Settings */}
       <div className="card">
-        <h2 className="font-bold mb-1">Currency</h2>
+        <h2 className="mb-1 font-bold">Currency</h2>
         <div className="form-group">
           <label className="form-label">Display Currency</label>
           <select
@@ -125,7 +125,7 @@ export function SettingsPage() {
 
       {/* History Settings */}
       <div className="card">
-        <h2 className="font-bold mb-1">History</h2>
+        <h2 className="mb-1 font-bold">History</h2>
         <div className="form-group">
           <label className="form-label">Keep history for (months)</label>
           <select
@@ -147,16 +147,16 @@ export function SettingsPage() {
 
       {/* Data Management */}
       <div className="card">
-        <h2 className="font-bold mb-2">Data Management</h2>
+        <h2 className="mb-2 font-bold">Data Management</h2>
         
         {/* Export */}
         <div className="mb-2">
-          <h3 className="font-bold mb-1" style={{ fontSize: '1rem' }}>Export Data</h3>
+          <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Export Data</h3>
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Download all your budget data as a JSON file for backup or transfer.
           </p>
           <button
-            className="button w-full"
+            className="w-full button"
             onClick={handleExport}
             disabled={isExporting}
           >
@@ -166,11 +166,11 @@ export function SettingsPage() {
 
         {/* Import */}
         <div className="mb-2">
-          <h3 className="font-bold mb-1" style={{ fontSize: '1rem' }}>Import Data</h3>
+          <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Import Data</h3>
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Import budget data from a JSON file. This will replace all current data.
           </p>
-          <label className="button w-full" style={{ display: 'block', textAlign: 'center', cursor: 'pointer' }}>
+          <label className="w-full button" style={{ display: 'block', textAlign: 'center', cursor: 'pointer' }}>
             {isImporting ? 'Importing...' : '📥 Import Data'}
             <input
               type="file"
@@ -184,12 +184,12 @@ export function SettingsPage() {
 
         {/* Clear Data */}
         <div>
-          <h3 className="font-bold mb-1" style={{ fontSize: '1rem' }}>Reset All Data</h3>
+          <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Reset All Data</h3>
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Permanently delete all budget data. This action cannot be undone.
           </p>
           <button
-            className="button-danger w-full"
+            className="w-full button button-danger"
             onClick={handleClearData}
             disabled={isClearing}
           >
@@ -200,7 +200,7 @@ export function SettingsPage() {
 
       {/* App Info */}
       <div className="card">
-        <h2 className="font-bold mb-1">About</h2>
+        <h2 className="mb-1 font-bold">About</h2>
         <div style={{ fontSize: '0.9rem', color: '#666' }}>
           <p><strong>Financial Tracker PWA</strong></p>
           <p>Version 1.0.0</p>

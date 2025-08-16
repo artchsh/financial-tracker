@@ -18,8 +18,8 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
 
   return (
     <div className="card">
-      <div className="flex flex-between align-center mb-1">
-        <div className="flex align-center gap-1">
+      <div className="flex flex-between mb-1 align-center">
+        <div className="flex gap-1 align-center">
           <div
             style={{
               width: '12px',
@@ -31,7 +31,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
           <h3 className="font-bold">{category.name}</h3>
         </div>
         <button
-          className="button-secondary"
+          className="button button-secondary"
           style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
           onClick={() => setShowActions(!showActions)}
         >
@@ -42,7 +42,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
       {showActions && (
         <div className="flex gap-1 mb-2">
           <button
-            className="button-secondary"
+            className="button button-secondary"
             style={{ padding: '0.5rem', fontSize: '0.8rem', flex: 1 }}
             onClick={() => {
               onEdit(category);
@@ -52,7 +52,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             Edit
           </button>
           <button
-            className="button-danger"
+            className="button button-danger"
             style={{ padding: '0.5rem', fontSize: '0.8rem', flex: 1 }}
             onClick={() => {
               if (window.confirm(`Delete category "${category.name}"?`)) {

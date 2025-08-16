@@ -32,10 +32,10 @@ export function HistoryPage() {
 
   return (
     <div>
-      <h1 className="font-bold font-large mb-2">Budget History</h1>
+      <h1 className="mb-2 font-large font-bold">Budget History</h1>
 
       {sortedBudgets.length === 0 ? (
-        <div className="card text-center" style={{ color: '#666' }}>
+        <div className="text-center card" style={{ color: '#666' }}>
           <p>No budget history yet</p>
           <p style={{ fontSize: '0.9rem' }}>Start creating budgets to see your history here</p>
         </div>
@@ -59,7 +59,7 @@ export function HistoryPage() {
                 }}
                 onClick={() => handleViewMonth(budget.month)}
               >
-                <div className="flex flex-between align-center mb-1">
+                <div className="flex flex-between mb-1 align-center">
                   <h2 className="font-bold">
                     {formatMonth(budget.month)}
                     {isCurrentMonth && (

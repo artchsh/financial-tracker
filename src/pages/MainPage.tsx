@@ -111,7 +111,7 @@ export function MainPage() {
 
   return (
     <div>
-      <h1 className="font-bold font-large mb-2">Budget Tracker</h1>
+      <h1 className="mb-2 font-large font-bold">Budget Tracker</h1>
 
       <MonthPicker
         currentMonth={state.currentMonth}
@@ -120,10 +120,10 @@ export function MainPage() {
 
       {/* Spending Limit */}
       <div className="card">
-        <div className="flex flex-between align-center mb-1">
+        <div className="flex flex-between mb-1 align-center">
           <h2 className="font-bold">Monthly Limit</h2>
           <button
-            className="button-secondary"
+            className="button button-secondary"
             style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
             onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
           >
@@ -155,7 +155,7 @@ export function MainPage() {
         )}
 
         {isOverAllocated && (
-          <div className="warning mt-1">
+          <div className="mt-1 warning">
             ⚠️ You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
           </div>
         )}
@@ -163,7 +163,7 @@ export function MainPage() {
 
       {/* Summary */}
       <div className="card">
-        <h2 className="font-bold mb-1">Summary</h2>
+        <h2 className="mb-1 font-bold">Summary</h2>
         <div className="flex flex-between mb-1">
           <span>Total Allocated:</span>
           <span className="font-bold">{formatCurrency(totalAllocated)}</span>
@@ -182,7 +182,7 @@ export function MainPage() {
       </div>
 
       {/* Categories */}
-      <div className="flex flex-between align-center mb-2">
+      <div className="flex flex-between mb-2 align-center">
         <h2 className="font-bold">Categories</h2>
         <button
           className="button"
@@ -208,7 +208,7 @@ export function MainPage() {
           />
         ))
       ) : (
-        <div className="card text-center" style={{ color: '#666' }}>
+        <div className="text-center card" style={{ color: '#666' }}>
           <p>No categories yet</p>
           <p style={{ fontSize: '0.9rem' }}>Add your first category to start tracking your budget</p>
         </div>
