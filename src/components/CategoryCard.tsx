@@ -92,7 +92,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
           <h3 className="font-bold">{category.name}</h3>
         </div>
         <motion.button
-          className="button button-secondary"
+          className="button button-circle"
           style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
           onClick={() => setShowActions(!showActions)}
           whileHover={{ scale: 1.1 }}

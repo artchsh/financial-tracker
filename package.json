@@ -14,8 +14,8 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.0.0",
     "framer-motion": "^12.23.12",
+    "lucide-react": "^0.539.0",
     "react": "^19",
     "react-dom": "^19"
   },

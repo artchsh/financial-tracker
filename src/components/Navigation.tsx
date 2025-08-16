@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { PieChart, History, Settings } from 'lucide-react';
 
 type Page = 'main' | 'history' | 'settings';
 
@@ -49,7 +50,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'main' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          <i className="fas fa-chart-pie"></i>
+          <PieChart size={24} />
         </motion.div>
         <div className="nav-label">Budget</div>
       </motion.button>
@@ -69,7 +70,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'history' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          <i className="fas fa-history"></i>
+          <History size={24} />
         </motion.div>
         <div className="nav-label">History</div>
       </motion.button>
@@ -89,7 +90,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'settings' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          <i className="fas fa-cog"></i>
+          <Settings size={24} />
         </motion.div>
         <div className="nav-label">Settings</div>
       </motion.button>

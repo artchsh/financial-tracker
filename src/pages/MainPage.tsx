@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Edit3, AlertTriangle } from 'lucide-react';
 import { useApp } from '../context';
-import { MonthPicker } from '../components/MonthPicker';
+import { Category, MonthBudget } from '../types';
 import { CategoryCard } from '../components/CategoryCard';
 import { CategoryModal } from '../components/CategoryModal';
-import { Category, MonthBudget } from '../types';
+import { MonthPicker } from '../components/MonthPicker';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -171,7 +172,7 @@ export function MainPage() {
             whileTap={{ scale: 0.95 }}
             title="Edit spending limit"
           >
-            <i className="fas fa-pencil-alt"></i>
+            <Edit3 size={16} />
           </motion.button>
         </div>
 
@@ -200,7 +201,8 @@ export function MainPage() {
 
         {isOverAllocated && (
           <div className="mt-1 warning">
-            <i className="fas fa-exclamation-triangle"></i> You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
+            <AlertTriangle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} /> 
+            You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
           </div>
         )}
       </motion.div>

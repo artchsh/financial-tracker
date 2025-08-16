@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Download, FileText, Upload, Trash2 } from 'lucide-react';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
 
@@ -264,7 +265,7 @@ export function SettingsPage() {
             whileTap={{ scale: 0.98 }}
           >
             {isExporting ? 'Exporting...' : (
-              <><i className="fas fa-download"></i> Export Data (JSON)</>
+              <><Download size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Export Data (JSON)</>
             )}
           </motion.button>
           <motion.button
@@ -275,7 +276,7 @@ export function SettingsPage() {
             whileTap={{ scale: 0.98 }}
           >
             {isExporting ? 'Exporting...' : (
-              <><i className="fas fa-file-alt"></i> Export Summary (Text)</>
+              <><FileText size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Export Summary (Text)</>
             )}
           </motion.button>
         </div>
@@ -293,7 +294,7 @@ export function SettingsPage() {
             whileTap={{ scale: 0.98 }}
           >
             {isImporting ? 'Importing...' : (
-              <><i className="fas fa-upload"></i> Import Data</>
+              <><Upload size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Import Data</>
             )}
             <input
               type="file"
@@ -319,7 +320,7 @@ export function SettingsPage() {
             whileTap={{ scale: 0.98 }}
           >
             {isClearing ? 'Clearing...' : (
-              <><i className="fas fa-trash"></i> Delete All Data</>
+              <><Trash2 size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Delete All Data</>
             )}
           </motion.button>
         </div>
@@ -330,7 +331,7 @@ export function SettingsPage() {
         <h2 className="mb-1 font-bold">About</h2>
         <div style={{ fontSize: '0.9rem', color: '#666' }}>
           <p><strong>Financial Tracker PWA</strong></p>
-          <p>Version 1.0.0</p>
+          <p>Version 1.1.0</p>
           <p className="mt-1">Built with React and IndexedDB for offline use</p>
           <p className="mt-1">✅ Works offline</p>
           <p>✅ Mobile optimized</p>
