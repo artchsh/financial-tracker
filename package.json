@@ -1,0 +1,26 @@
+{
+  "name": "financial-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "homepage": ".",
+  "main": "src/index.tsx",
+  "module": "src/index.tsx",
+  "scripts": {
+    "dev": "bun --hot src/index.tsx",
+    "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*' && cp -r public/* dist/",
+    "start": "NODE_ENV=production bun src/index.tsx",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/bun": "latest",
+    "gh-pages": "^6.1.1"
+  }
+}
