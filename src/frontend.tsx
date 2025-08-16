@@ -8,8 +8,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import installNoBounce from './noBounce';
 
 const elem = document.getElementById("root")!;
+// Install iOS bounce prevention early
+installNoBounce();
 const app = (
   <StrictMode>
     <App />

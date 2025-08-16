@@ -57,12 +57,13 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+  // Keep body styles as-is; body is globally locked. We only mark inertness.
+  document.body.setAttribute('aria-hidden', 'true');
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+  document.body.removeAttribute('aria-hidden');
     };
   }, [isOpen, onClose]);
 

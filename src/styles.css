@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  overflow: hidden; /* Prevent viewport scrolling to avoid rubber-band */
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,13 +21,15 @@ body {
   line-height: 1.5;
   /* Enable smooth scrolling for better animation experience */
   scroll-behavior: smooth;
-  /* Improve rendering performance for animations */
-  will-change: scroll-position;
-  /* iOS PWA: Support for safe areas and prevent bounce */
-  -webkit-overflow-scrolling: touch;
+  /* Prevent viewport rubber-band by locking body scroll */
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior-y: none;
+  touch-action: auto;
 }
 
 #root {
+  height: 100%;
   min-height: 100vh;
   /* iOS PWA: Use full viewport height with safe areas */
   min-height: 100dvh;
@@ -34,6 +41,7 @@ body {
 .app {
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 100vh;
   /* iOS PWA: Use full dynamic viewport height */
   min-height: 100dvh;
@@ -50,6 +58,10 @@ body {
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+  /* Make inner content the scroll container */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; /* Prevent scroll chaining/bounce */
 }
 
 /* Navigation */
@@ -252,6 +264,8 @@ body {
   max-width: 400px;
   max-height: 90vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .modal-header {
@@ -420,6 +434,8 @@ body {
   max-height: 200px;
   overflow-y: auto;
   margin-top: 2px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .dropdown-option {
@@ -430,8 +446,9 @@ body {
   text-align: left;
   cursor: pointer;
   font-size: 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  /* border-bottom: 1px solid #f0f0f0; */
   transition: background-color 0.075s;
+  color: black;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
