@@ -136,10 +136,24 @@ export function HistoryPage() {
                     <span>Spent:</span>
                     <span>{formatCurrency(totalSpent)}</span>
                   </div>
-                  <div className="flex flex-between" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
-                    <span>Free Money:</span>
+                  <div className="flex flex-between" style={{ fontSize: '0.9rem' }}>
+                    <span>Left:</span>
                     <span style={{ color: freeMoney < 0 ? '#dc3545' : '#28a745' }}>
                       {formatCurrency(freeMoney)}
+                    </span>
+                  </div>
+                  <div className="flex flex-between" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
+                    <span>Free Money:</span>
+                    <span style={{ 
+                      color: (() => {
+                        const freeMoneyNew = budget.spendingLimit - totalAllocated;
+                        const ratio = budget.spendingLimit > 0 ? freeMoneyNew / budget.spendingLimit : 0;
+                        if (ratio < 0.1) return '#dc3545'; // Red when less than 10%
+                        if (ratio < 0.3) return '#fd7e14'; // Orange when less than 30%
+                        return '#28a745'; // Green when 30% or more
+                      })()
+                    }}>
+                      {formatCurrency(budget.spendingLimit - totalAllocated)}
                     </span>
                   </div>
                 </div>

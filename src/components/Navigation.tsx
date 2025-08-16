@@ -49,7 +49,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'main' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          📊
+          <i className="fas fa-chart-pie"></i>
         </motion.div>
         <div className="nav-label">Budget</div>
       </motion.button>
@@ -69,7 +69,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'history' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          📈
+          <i className="fas fa-history"></i>
         </motion.div>
         <div className="nav-label">History</div>
       </motion.button>
@@ -89,7 +89,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           animate={currentPage === 'settings' ? 'active' : 'inactive'}
           whileHover="hover"
         >
-          ⚙️
+          <i className="fas fa-cog"></i>
         </motion.div>
         <div className="nav-label">Settings</div>
       </motion.button>

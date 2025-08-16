@@ -169,8 +169,9 @@ export function MainPage() {
             onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            title="Edit spending limit"
           >
-            Edit
+            <i className="fas fa-pencil-alt"></i>
           </motion.button>
         </div>
 
@@ -199,7 +200,7 @@ export function MainPage() {
 
         {isOverAllocated && (
           <div className="mt-1 warning">
-            ⚠️ You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
+            <i className="fas fa-exclamation-triangle"></i> You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
           </div>
         )}
       </motion.div>
@@ -218,11 +219,27 @@ export function MainPage() {
           <span>Total Spent:</span>
           <span className="font-bold">{formatCurrency(totalSpent)}</span>
         </div>
-        <div className="flex flex-between">
-          <span>Free Money:</span>
+        <div className="flex flex-between mb-1">
+          <span>Left:</span>
           <span className={`font-bold ${freeMoney < 0 ? '' : ''}`}
                 style={{ color: freeMoney < 0 ? '#dc3545' : '#28a745' }}>
             {formatCurrency(freeMoney)}
+          </span>
+        </div>
+        <div className="flex flex-between">
+          <span>Free Money:</span>
+          <span className={`font-bold`}
+                style={{ 
+                  color: (() => {
+                    const limit = currentBudget?.spendingLimit || 0;
+                    const freeMoneyNew = limit - totalAllocated;
+                    const ratio = limit > 0 ? freeMoneyNew / limit : 0;
+                    if (ratio < 0.1) return '#dc3545'; // Red when less than 10%
+                    if (ratio < 0.3) return '#fd7e14'; // Orange when less than 30%
+                    return '#28a745'; // Green when 30% or more
+                  })()
+                }}>
+            {formatCurrency((currentBudget?.spendingLimit || 0) - totalAllocated)}
           </span>
         </div>
       </motion.div>
