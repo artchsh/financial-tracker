@@ -14,6 +14,10 @@ body {
   background-color: #ffffff;
   color: #000000;
   line-height: 1.5;
+  /* Enable smooth scrolling for better animation experience */
+  scroll-behavior: smooth;
+  /* Improve rendering performance for animations */
+  will-change: scroll-position;
 }
 
 #root {
@@ -271,6 +275,43 @@ body {
 .flex-between { justify-content: space-between; }
 .flex-center { justify-content: center; }
 .align-center { align-items: center; }
+
+/* Animation Performance Enhancements */
+.card,
+.button,
+.button-primary,
+.button-secondary,
+.button-outline,
+.nav-item,
+.category-card,
+.settings-card {
+  /* Optimize for animations */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  /* Add subtle transitions for non-animated states */
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Focus and accessibility improvements for animated elements */
+.button:focus-visible,
+.button-primary:focus-visible,
+.button-secondary:focus-visible,
+.button-outline:focus-visible,
+.nav-item:focus-visible {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
+  /* Ensure focus remains visible during animations */
+  z-index: 1;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 .gap-1 { gap: 0.5rem; }
 .gap-2 { gap: 1rem; }
 .w-full { width: 100%; }

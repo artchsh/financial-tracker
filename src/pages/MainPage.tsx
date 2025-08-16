@@ -1,9 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context';
 import { MonthPicker } from '../components/MonthPicker';
 import { CategoryCard } from '../components/CategoryCard';
 import { CategoryModal } from '../components/CategoryModal';
 import { Category, MonthBudget } from '../types';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const summaryVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+};
 
 export function MainPage() {
   const {
@@ -110,25 +131,47 @@ export function MainPage() {
   }
 
   return (
-    <div>
-      <h1 className="mb-2 font-large font-bold">Budget Tracker</h1>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 
+        className="mb-2 font-large font-bold"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Budget Tracker
+      </motion.h1>
 
-      <MonthPicker
-        currentMonth={state.currentMonth}
-        onMonthChange={setCurrentMonth}
-      />
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <MonthPicker
+          currentMonth={state.currentMonth}
+          onMonthChange={setCurrentMonth}
+        />
+      </motion.div>
 
       {/* Spending Limit */}
-      <div className="card">
+      <motion.div 
+        className="card"
+        variants={summaryVariants}
+      >
         <div className="flex flex-between mb-1 align-center">
           <h2 className="font-bold">Monthly Limit</h2>
-          <button
+          <motion.button
             className="button button-secondary"
             style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
             onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Edit
-          </button>
+          </motion.button>
         </div>
 
         {showSpendingLimitEdit ? (
@@ -159,10 +202,13 @@ export function MainPage() {
             ⚠️ You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Summary */}
-      <div className="card">
+      <motion.div 
+        className="card"
+        variants={summaryVariants}
+      >
         <h2 className="mb-1 font-bold">Summary</h2>
         <div className="flex flex-between mb-1">
           <span>Total Allocated:</span>
@@ -179,40 +225,55 @@ export function MainPage() {
             {formatCurrency(freeMoney)}
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Categories */}
-      <div className="flex flex-between mb-2 align-center">
+      <motion.div 
+        className="flex flex-between mb-2 align-center"
+        variants={summaryVariants}
+      >
         <h2 className="font-bold">Categories</h2>
-        <button
+        <motion.button
           className="button"
           onClick={() => {
             setEditingCategory(undefined);
             setIsModalOpen(true);
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Add Category
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
-      {currentBudget && currentBudget.categories.length > 0 ? (
-        currentBudget.categories.map(category => (
-          <CategoryCard
-            key={category.id}
-            category={category}
-            onEdit={(cat) => {
-              setEditingCategory(cat);
-              setIsModalOpen(true);
-            }}
-            onDelete={handleDeleteCategory}
-          />
-        ))
-      ) : (
-        <div className="text-center card" style={{ color: '#666' }}>
-          <p>No categories yet</p>
-          <p style={{ fontSize: '0.9rem' }}>Add your first category to start tracking your budget</p>
-        </div>
-      )}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {currentBudget && currentBudget.categories.length > 0 ? (
+          currentBudget.categories.map(category => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onEdit={(cat) => {
+                setEditingCategory(cat);
+                setIsModalOpen(true);
+              }}
+              onDelete={handleDeleteCategory}
+            />
+          ))
+        ) : (
+          <motion.div 
+            className="text-center card" 
+            style={{ color: '#666' }}
+            variants={summaryVariants}
+          >
+            <p>No categories yet</p>
+            <p style={{ fontSize: '0.9rem' }}>Add your first category to start tracking your budget</p>
+          </motion.div>
+        )}
+      </motion.div>
 
       <CategoryModal
         isOpen={isModalOpen}
@@ -223,6 +284,6 @@ export function MainPage() {
         onSave={handleSaveCategory}
         editingCategory={editingCategory}
       />
-    </div>
+    </motion.div>
   );
 }

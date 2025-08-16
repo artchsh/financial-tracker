@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,6 +7,45 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
 }
+
+const modalVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.8,
+    y: -50
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      damping: 25,
+      stiffness: 500,
+      duration: 0.3
+    }
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.8,
+    y: -50,
+    transition: {
+      duration: 0.2
+    }
+  }
+};
+
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.2 }
+  },
+  exit: { 
+    opacity: 0,
+    transition: { duration: 0.2 }
+  }
+};
 
 export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   useEffect(() => {
@@ -26,19 +66,41 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 className="modal-title">{title}</h2>
-          <button className="modal-close" onClick={onClose}>
-            ×
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          className="modal-overlay" 
+          onClick={onClose}
+          variants={overlayVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <motion.div 
+            className="modal" 
+            onClick={(e) => e.stopPropagation()}
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <div className="modal-header">
+              <h2 className="modal-title">{title}</h2>
+              <motion.button 
+                className="modal-close" 
+                onClick={onClose}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+              >
+                ×
+              </motion.button>
+            </div>
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

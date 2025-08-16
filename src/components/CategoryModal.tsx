@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Category } from '../types';
 import { Modal } from './Modal';
 
@@ -14,6 +15,47 @@ const COLORS = [
   '#DDA0DD', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE',
   '#85C1E9', '#F8C471', '#82E0AA', '#F1948A', '#AED6F1'
 ];
+
+const formVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.3,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const fieldVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { duration: 0.3 }
+  }
+};
+
+const colorVariants = {
+  unselected: { 
+    scale: 1,
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+  },
+  selected: { 
+    scale: 1.1,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    transition: { duration: 0.2 }
+  },
+  hover: { 
+    scale: 1.05,
+    transition: { duration: 0.15 }
+  },
+  tap: { 
+    scale: 0.95,
+    transition: { duration: 0.1 }
+  }
+};
 
 export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: CategoryModalProps) {
   const [name, setName] = useState('');
@@ -61,30 +103,35 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={editingCategory ? 'Edit Category' : 'Add Category'}
     >
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
+      <motion.form 
+        onSubmit={handleSubmit}
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div className="form-group" variants={fieldVariants}>
           <label className="form-label">Category Name</label>
-          <input
+          <motion.input
             type="text"
             className="input"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g., Food, Transport"
             autoFocus
+            whileFocus={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           />
-        </div>
+        </motion.div>
 
-        <div className="form-group">
+        <motion.div className="form-group" variants={fieldVariants}>
           <label className="form-label">Allocated Amount</label>
-          <input
+          <motion.input
             type="number"
             className="input"
             value={allocated}
@@ -92,12 +139,14 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             placeholder="0"
             min="0"
             step="0.01"
+            whileFocus={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           />
-        </div>
+        </motion.div>
 
-        <div className="form-group">
+        <motion.div className="form-group" variants={fieldVariants}>
           <label className="form-label">Spent Amount</label>
-          <input
+          <motion.input
             type="number"
             className="input"
             value={spent}
@@ -105,10 +154,12 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             placeholder="0"
             min="0"
             step="0.01"
+            whileFocus={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           />
-        </div>
+        </motion.div>
 
-        <div className="form-group">
+        <motion.div className="form-group" variants={fieldVariants}>
           <label className="form-label">Color</label>
           <div style={{
             display: 'grid',
@@ -116,8 +167,8 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             gap: '0.5rem',
             marginTop: '0.5rem'
           }}>
-            {COLORS.map(colorOption => (
-              <button
+            {COLORS.map((colorOption, index) => (
+              <motion.button
                 key={colorOption}
                 type="button"
                 style={{
@@ -129,20 +180,40 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
                   cursor: 'pointer'
                 }}
                 onClick={() => setColor(colorOption)}
+                variants={colorVariants}
+                initial="unselected"
+                animate={color === colorOption ? 'selected' : 'unselected'}
+                whileHover="hover"
+                whileTap="tap"
+                transition={{ delay: index * 0.05 }}
               />
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="modal-actions">
-          <button type="button" className="button-secondary" onClick={onClose}>
+        <motion.div 
+          className="modal-actions"
+          variants={fieldVariants}
+        >
+          <motion.button 
+            type="button" 
+            className="button button-secondary" 
+            onClick={onClose}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             Cancel
-          </button>
-          <button type="submit" className="button">
+          </motion.button>
+          <motion.button 
+            type="submit" 
+            className="button"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             {editingCategory ? 'Update' : 'Add'} Category
-          </button>
-        </div>
-      </form>
+          </motion.button>
+        </motion.div>
+      </motion.form>
     </Modal>
   );
 }

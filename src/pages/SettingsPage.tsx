@@ -1,6 +1,27 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
+
+const settingsVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.4 }
+  }
+};
 
 export function SettingsPage() {
   const { state, updateSettings, exportData, importData, clearAllData } = useApp();
@@ -101,11 +122,22 @@ export function SettingsPage() {
   }
 
   return (
-    <div>
-      <h1 className="mb-2 font-large font-bold">Settings</h1>
+    <motion.div
+      variants={settingsVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 
+        className="mb-2 font-large font-bold"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Settings
+      </motion.h1>
 
       {/* Currency Settings */}
-      <div className="card">
+      <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">Currency</h2>
         <div className="form-group">
           <label className="form-label">Display Currency</label>
@@ -121,10 +153,10 @@ export function SettingsPage() {
             ))}
           </select>
         </div>
-      </div>
+      </motion.div>
 
       {/* History Settings */}
-      <div className="card">
+      <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">History</h2>
         <div className="form-group">
           <label className="form-label">Keep history for (months)</label>
@@ -143,10 +175,10 @@ export function SettingsPage() {
         <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
           Currently storing {state.budgets.length} month{state.budgets.length !== 1 ? 's' : ''} of data
         </p>
-      </div>
+      </motion.div>
 
       {/* Data Management */}
-      <div className="card">
+      <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-2 font-bold">Data Management</h2>
         
         {/* Export */}
@@ -155,13 +187,15 @@ export function SettingsPage() {
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Download all your budget data as a JSON file for backup or transfer.
           </p>
-          <button
+          <motion.button
             className="w-full button"
             onClick={handleExport}
             disabled={isExporting}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             {isExporting ? 'Exporting...' : '📤 Export Data'}
-          </button>
+          </motion.button>
         </div>
 
         {/* Import */}
@@ -170,7 +204,12 @@ export function SettingsPage() {
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Import budget data from a JSON file. This will replace all current data.
           </p>
-          <label className="w-full button" style={{ display: 'block', textAlign: 'center', cursor: 'pointer' }}>
+          <motion.label 
+            className="w-full button" 
+            style={{ display: 'block', textAlign: 'center', cursor: 'pointer' }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             {isImporting ? 'Importing...' : '📥 Import Data'}
             <input
               type="file"
@@ -179,7 +218,7 @@ export function SettingsPage() {
               disabled={isImporting}
               style={{ display: 'none' }}
             />
-          </label>
+          </motion.label>
         </div>
 
         {/* Clear Data */}
@@ -188,18 +227,20 @@ export function SettingsPage() {
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
             Permanently delete all budget data. This action cannot be undone.
           </p>
-          <button
+          <motion.button
             className="w-full button button-danger"
             onClick={handleClearData}
             disabled={isClearing}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             {isClearing ? 'Clearing...' : '🗑️ Delete All Data'}
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
       {/* App Info */}
-      <div className="card">
+      <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">About</h2>
         <div style={{ fontSize: '0.9rem', color: '#666' }}>
           <p><strong>Financial Tracker PWA</strong></p>
@@ -209,13 +250,16 @@ export function SettingsPage() {
           <p>✅ Mobile optimized</p>
           <p>✅ Data stored locally</p>
         </div>
-      </div>
+      </motion.div>
 
       {state.error && (
-        <div className="error">
+        <motion.div 
+          className="error"
+          variants={cardVariants}
+        >
           {state.error}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

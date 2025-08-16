@@ -10,6 +10,7 @@ A mobile-optimized Progressive Web App for personal budget tracking built with R
 - **PWA Support**: Installable as a native app with offline functionality
 
 ### 💰 Budget Management
+- **Monthly Budgets**: Set spending limits and allocate money to categories
 - **Category Tracking**: Create colored categories with allocated and spent amounts
 - **Free Money Calculation**: Automatic calculation of remaining budget
 - **Smart Warnings**: Alerts when spending exceeds allocations or limits

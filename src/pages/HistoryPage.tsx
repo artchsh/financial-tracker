@@ -1,5 +1,25 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useApp } from '../context';
+
+const historyVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3 }
+  }
+};
 
 export function HistoryPage() {
   const { state, formatCurrency, calculateFreeMoney, setCurrentMonth } = useApp();
@@ -31,26 +51,44 @@ export function HistoryPage() {
   }
 
   return (
-    <div>
-      <h1 className="mb-2 font-large font-bold">Budget History</h1>
+    <motion.div
+      variants={historyVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.h1 
+        className="mb-2 font-large font-bold"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Budget History
+      </motion.h1>
 
       {sortedBudgets.length === 0 ? (
-        <div className="text-center card" style={{ color: '#666' }}>
+        <motion.div 
+          className="text-center card" 
+          style={{ color: '#666' }}
+          variants={cardVariants}
+        >
           <p>No budget history yet</p>
           <p style={{ fontSize: '0.9rem' }}>Start creating budgets to see your history here</p>
-        </div>
+        </motion.div>
       ) : (
         <div>
-          <p style={{ color: '#666', marginBottom: '1rem' }}>
+          <motion.p 
+            style={{ color: '#666', marginBottom: '1rem' }}
+            variants={cardVariants}
+          >
             Showing {sortedBudgets.length} month{sortedBudgets.length !== 1 ? 's' : ''}
-          </p>
+          </motion.p>
 
-          {sortedBudgets.map(budget => {
+          {sortedBudgets.map((budget, index) => {
             const { totalAllocated, totalSpent, freeMoney } = getBudgetSummary(budget);
             const isCurrentMonth = budget.month === state.currentMonth;
 
             return (
-              <div 
+              <motion.div 
                 key={budget.month} 
                 className="card"
                 style={{ 
@@ -58,6 +96,13 @@ export function HistoryPage() {
                   cursor: 'pointer'
                 }}
                 onClick={() => handleViewMonth(budget.month)}
+                variants={cardVariants}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className="flex flex-between mb-1 align-center">
                   <h2 className="font-bold">
@@ -134,14 +179,18 @@ export function HistoryPage() {
                     </div>
                   </div>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
       )}
 
       {/* Storage Info */}
-      <div className="card" style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}>
+      <motion.div 
+        className="card" 
+        style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}
+        variants={cardVariants}
+      >
         <div className="text-center">
           <div>📊 History retention: {state.settings.historyRetentionMonths} months</div>
           {sortedBudgets.length > 0 && (
@@ -150,7 +199,7 @@ export function HistoryPage() {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

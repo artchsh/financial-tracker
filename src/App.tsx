@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AppProvider } from './context';
 import { Navigation } from './components/Navigation';
 import { MainPage } from './pages/MainPage';
@@ -7,6 +8,18 @@ import { SettingsPage } from './pages/SettingsPage';
 import './styles.css';
 
 type Page = 'main' | 'history' | 'settings';
+
+const pageVariants = {
+  initial: { opacity: 0, x: -20 },
+  in: { opacity: 1, x: 0 },
+  out: { opacity: 0, x: 20 }
+};
+
+const pageTransition = {
+  type: 'tween' as const,
+  ease: 'anticipate' as const,
+  duration: 0.3
+};
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<Page>('main');
@@ -36,7 +49,18 @@ export function App() {
     <AppProvider>
       <div className="app">
         <div className="app-content">
-          {renderPage()}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentPage}
+              initial="initial"
+              animate="in"
+              exit="out"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              {renderPage()}
+            </motion.div>
+          </AnimatePresence>
         </div>
         <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
       </div>
