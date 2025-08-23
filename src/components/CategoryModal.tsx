@@ -40,11 +40,11 @@ const fieldVariants = {
 const colorVariants = {
   unselected: { 
     scale: 1,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    // boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   },
   selected: { 
     scale: 1.1,
-    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    // boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
     transition: { duration: 0.1 }
   },
   hover: { 
@@ -175,7 +175,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
                   width: '40px',
                   height: '40px',
                   backgroundColor: colorOption,
-                  border: color === colorOption ? '3px solid #000' : '1px solid #ccc',
+                  border: color === colorOption ? '1px solid rgba(0,0,0,0.2)' : 'none',
                   borderRadius: '50%',
                   cursor: 'pointer'
                 }}

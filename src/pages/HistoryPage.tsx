@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '../context';
+import { LucideCalendarClock } from 'lucide-react';
 
 const historyVariants = {
   hidden: { opacity: 0 },
@@ -202,8 +203,11 @@ export function HistoryPage() {
         style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}
         variants={cardVariants}
       >
-        <div className="text-center">
-          <div>📊 History retention: {state.settings.historyRetentionMonths} months</div>
+        <div className="flex flex-row flex-center w-full">
+          <div className='flex gap-1'>
+            <LucideCalendarClock />
+            <p>History retention: {state.settings.historyRetentionMonths} months</p>
+          </div>
           {sortedBudgets.length > 0 && (
             <div className="mt-1">
               Oldest: {formatMonth(sortedBudgets[sortedBudgets.length - 1].month)}

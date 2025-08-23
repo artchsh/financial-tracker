@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Edit3, AlertTriangle } from 'lucide-react';
+import { Edit3, AlertTriangle, LucideDiamondPlus } from 'lucide-react';
 import { useApp } from '../context';
 import { Category, MonthBudget } from '../types';
 import { CategoryCard } from '../components/CategoryCard';
@@ -253,7 +253,8 @@ export function MainPage() {
       >
         <h2 className="font-bold">Categories</h2>
         <motion.button
-          className="button"
+          className="button button-ghost"
+          style={{ padding: "0.4rem" }}
           onClick={() => {
             setEditingCategory(undefined);
             setIsModalOpen(true);
@@ -261,7 +262,7 @@ export function MainPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Add Category
+          <LucideDiamondPlus />
         </motion.button>
       </motion.div>
 

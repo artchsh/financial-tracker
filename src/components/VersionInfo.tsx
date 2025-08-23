@@ -37,10 +37,6 @@ export default function VersionInfo() {
       <>
         <p><strong>Financial Tracker PWA</strong></p>
         <p>Version: Unknown</p>
-        <p className="mt-1">Built with React and IndexedDB for offline use</p>
-        <p className="mt-1">Works offline</p>
-        <p>Mobile optimized</p>
-        <p>Data stored locally</p>
         <p>{err}</p>
       </>
     );
@@ -51,10 +47,6 @@ export default function VersionInfo() {
       <>
         <p><strong>Financial Tracker PWA</strong></p>
         <p>Loading version...</p>
-        <p className="mt-1">Built with React and IndexedDB for offline use</p>
-        <p className="mt-1">Works offline</p>
-        <p>Mobile-first</p>
-        <p>Data stored locally</p>
       </>
     );
   }
@@ -69,10 +61,6 @@ export default function VersionInfo() {
       {version.timestamp && (
         <p className="mt-1">Built on: {new Date(version.timestamp).toLocaleString()}</p>
       )}
-      <p className="mt-1">Built with React and IndexedDB for offline use</p>
-      <p className="mt-1">Works offline</p>
-      <p>Mobile optimized</p>
-      <p>Data stored locally</p>
     </>
   );
 }
