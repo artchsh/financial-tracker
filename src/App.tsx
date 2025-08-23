@@ -7,6 +7,8 @@ import { HistoryPage } from './pages/HistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
 import './styles.css';
 import { useVersionCheck } from './useVersion';
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 type Page = 'main' | 'history' | 'settings';
 
@@ -49,6 +51,8 @@ export function App() {
 
   return (
     <AppProvider>
+      <Analytics />
+      <SpeedInsights />
       <div className="app">
         {updateAvailable && (
           <div className="update-banner" role="status">
