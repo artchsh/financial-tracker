@@ -135,6 +135,29 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: opacity 0.1s;
+
+.update-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #0b7285;
+  color: white;
+  font-size: 14px;
+}
+
+.update-button {
+  background: #ffd43b;
+  border: none;
+  color: #1f2937;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
   min-height: 44px; /* Touch-friendly minimum */
   /* iOS PWA: Optimize touch interactions */
   touch-action: manipulation;

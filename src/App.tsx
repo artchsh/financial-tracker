@@ -6,6 +6,7 @@ import { MainPage } from './pages/MainPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
 import './styles.css';
+import { useVersionCheck } from './useVersion';
 
 type Page = 'main' | 'history' | 'settings';
 
@@ -23,12 +24,13 @@ const pageTransition = {
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<Page>('main');
+  const { updateAvailable, reloadNow, remote } = useVersionCheck({ intervalMs: 60_000 });
 
   useEffect(() => {
     // Register service worker for PWA functionality in production
     if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      navigator.serviceWorker.register('/sw.js')
-        .catch(error => console.log('SW registration failed'));
+      const swPath = new URL('public/sw.js', window.location.origin + window.location.pathname).pathname;
+      navigator.serviceWorker.register(swPath).catch(() => {});
     }
   }, []);
 
@@ -48,6 +50,12 @@ export function App() {
   return (
     <AppProvider>
       <div className="app">
+        {updateAvailable && (
+          <div className="update-banner" role="status">
+            <span>New version{remote?.version ? ` ${remote.version}` : ''} available.</span>
+            <button className="update-button" onClick={reloadNow}>Update</button>
+          </div>
+        )}
         <div className="app-content">
           <AnimatePresence mode="wait">
             <motion.div

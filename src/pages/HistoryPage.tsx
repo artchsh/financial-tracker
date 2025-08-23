@@ -42,8 +42,6 @@ export function HistoryPage() {
 
   const handleViewMonth = (month: string) => {
     setCurrentMonth(month);
-    // In a real router setup, you'd navigate to the main page
-    // For now, we'll just switch the current month
   };
 
   if (state.loading) {

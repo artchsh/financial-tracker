@@ -4,6 +4,7 @@ import { Download, FileText, Upload, Trash2 } from 'lucide-react';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
 import { Dropdown } from '../components/Dropdown';
+import VersionInfo from '../components/VersionInfo';
 
 const settingsVariants = {
   hidden: { opacity: 0 },
@@ -332,12 +333,7 @@ export function SettingsPage() {
       <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">About</h2>
         <div style={{ fontSize: '0.9rem', color: '#666' }}>
-          <p><strong>Financial Tracker PWA</strong></p>
-          <p>Version 1.2.4</p>
-          <p className="mt-1">Built with React and IndexedDB for offline use</p>
-          <p className="mt-1">✅ Works offline</p>
-          <p>✅ Mobile optimized</p>
-          <p>✅ Data stored locally</p>
+          <VersionInfo />
         </div>
       </motion.div>
 
