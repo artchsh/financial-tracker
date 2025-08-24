@@ -1,6 +1,6 @@
 // Robust Service Worker for PWA: cache versioning, offline, update flow
-const STATIC_CACHE = 'ft-static-v1';
-const RUNTIME_CACHE = 'ft-runtime-v1';
+const STATIC_CACHE = 'ft-static-v2';
+const RUNTIME_CACHE = 'ft-runtime-v2';
 
 // Must match how the app serves the file (we serve it under /public/version.json)
 const VERSION_URL = '/public/version.json';
@@ -16,27 +16,10 @@ const STATIC_ASSETS = [
   VERSION_URL,
 ];
 
-// Detect localhost/dev hosts — if true, skip all caching behavior
-const isLocalhost = (() => {
-  try {
-    const host = self.location && self.location.hostname;
-    return (
-      host === 'localhost' ||
-      host === '127.0.0.1' ||
-      host === '::1' ||
-      host?.endsWith('.localhost')
-    );
-  } catch {
-    return false;
-  }
-})();
+// Always cache, including localhost, to ensure consistent update flow
 
 // Utility: fetch with network-first and fallback to cache
 async function networkFirst(req) {
-  if (isLocalhost) {
-    // In dev, always use network only
-    return fetch(req);
-  }
   try {
     const res = await fetch(req);
     const cache = await caches.open(RUNTIME_CACHE);
@@ -51,10 +34,6 @@ async function networkFirst(req) {
 
 // Utility: cache-first for static
 async function cacheFirst(req) {
-  if (isLocalhost) {
-    // In dev, always use network only
-    return fetch(req);
-  }
   const cached = await caches.match(req);
   if (cached) return cached;
   const res = await fetch(req);
@@ -64,25 +43,13 @@ async function cacheFirst(req) {
 }
 
 self.addEventListener('install', (event) => {
-  // If running on localhost, do not pre-cache assets
-  if (isLocalhost) {
-    self.skipWaiting();
-    return;
-  }
-
-  self.skipWaiting();
+  // Do not auto-activate the new SW; wait for user action via SKIP_WAITING
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(() => {})
   );
 });
 
 self.addEventListener('activate', (event) => {
-  // If running on localhost, skip cache cleanup
-  if (isLocalhost) {
-    event.waitUntil(self.clients.claim());
-    return;
-  }
-
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
@@ -91,6 +58,9 @@ self.addEventListener('activate', (event) => {
           .filter((k) => ![STATIC_CACHE, RUNTIME_CACHE].includes(k))
           .map((k) => caches.delete(k))
       );
+  // Clear runtime cache to ensure fresh shell/assets load after update activation
+  await caches.delete(RUNTIME_CACHE);
+  await caches.open(RUNTIME_CACHE);
       // Take control so clients can message immediately
       await self.clients.claim();
     })()
@@ -101,32 +71,26 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // If localhost, don't serve from cache — just pass through to network
-  if (isLocalhost) {
-    event.respondWith(
-      fetch(request).catch(() => new Response('Offline', { status: 503 }))
-    );
-    return;
-  }
-
   // Handle version file network-first to detect updates quickly
   if (url.pathname === new URL(VERSION_URL, location.origin).pathname) {
     event.respondWith(networkFirst(request));
     return;
   }
 
-  // Navigation requests: network-first with offline fallback to cached shell
+  // Navigation requests: cache-first to keep app stable until explicit update
   if (request.mode === 'navigate') {
     event.respondWith(
       (async () => {
+        const cached = await caches.match('/index.html');
+        if (cached) return cached;
+        // If not cached yet, fetch and cache
         try {
           const res = await fetch(request);
           const cache = await caches.open(RUNTIME_CACHE);
           cache.put('/index.html', res.clone());
           return res;
         } catch {
-          const cached = await caches.match('/index.html');
-          return cached || new Response('Offline', { status: 503 });
+          return new Response('Offline', { status: 503 });
         }
       })()
     );
@@ -139,9 +103,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Default: network-first for same-origin, pass-through for cross-origin
+  // Default: cache-first for same-origin, pass-through for cross-origin
   if (url.origin === location.origin) {
-    event.respondWith(networkFirst(request));
+    event.respondWith(cacheFirst(request));
   }
 });
 

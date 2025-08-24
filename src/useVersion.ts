@@ -16,6 +16,26 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
   const currentRef = useRef<VersionInfo | null>(null);
   currentRef.current = current;
 
+  function cmpVersions(a: string, b: string): number {
+    // Compare semantic-like versions: returns 1 if a>b, -1 if a<b, 0 if equal
+    const pa = a.split('.').map((x) => parseInt(x, 10));
+    const pb = b.split('.').map((x) => parseInt(x, 10));
+    const len = Math.max(pa.length, pb.length);
+    for (let i = 0; i < len; i++) {
+      const va = Number.isFinite(pa[i]) ? pa[i] : 0;
+      const vb = Number.isFinite(pb[i]) ? pb[i] : 0;
+      if (va > vb) return 1;
+      if (va < vb) return -1;
+    }
+    return 0;
+  }
+
+  function isRemoteGreater(remoteV?: string, localV?: string): boolean {
+    if (!remoteV) return false;
+    if (!localV) return false; // First run: treat as up-to-date after storing
+    return cmpVersions(remoteV, localV) > 0;
+  }
+
   async function fetchVersion(): Promise<VersionInfo | null> {
     try {
       const res = await fetch('/public/version.json', { cache: 'no-store' });
@@ -55,17 +75,18 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
 
     (async () => {
       const stored = readStoredVersion();
-      if (stored) {
-        setCurrent(stored);
-      }
+      if (stored) setCurrent(stored);
 
       const latest = await fetchVersion();
       if (latest) {
         setRemote(latest);
-        if (!stored || stored.version !== latest.version) {
-          setUpdateAvailable(true);
-        } else {
+        if (!stored) {
+          // First launch: store current version without prompting for update
+          writeStoredVersion(latest);
+          setCurrent(latest);
           setUpdateAvailable(false);
+        } else {
+          setUpdateAvailable(isRemoteGreater(latest.version, stored.version));
         }
       }
     })();
@@ -74,9 +95,8 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
       const latest = await fetchVersion();
       if (latest) {
         setRemote(latest);
-        if (!currentRef.current || currentRef.current.version !== latest.version) {
-          setUpdateAvailable(true);
-        }
+        const localV = currentRef.current?.version;
+        setUpdateAvailable(isRemoteGreater(latest.version, localV));
       }
     }, intervalMs) as unknown as number;
 
@@ -85,12 +105,33 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
     };
   }, [intervalMs]);
 
-  const reloadNow = () => {
+  const reloadNow = async () => {
     if (remote) writeStoredVersion(remote);
-    if (navigator.serviceWorker?.controller) {
-      navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
-      setTimeout(() => window.location.reload(), 500);
-    } else {
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      // Prefer sending message to waiting SW so it can activate
+      if (reg?.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        const onControllerChange = () => {
+          navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
+          window.location.reload();
+        };
+        navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange);
+        // Safety timeout
+        setTimeout(() => {
+          navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
+          window.location.reload();
+        }, 1500);
+        return;
+      }
+      // Fallback: ask current controller to coordinate reload
+      if (navigator.serviceWorker?.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        window.location.reload();
+      }
+    } catch {
       window.location.reload();
     }
   };
