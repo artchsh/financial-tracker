@@ -4,6 +4,7 @@ import { Download, FileText, Upload, Trash2 } from 'lucide-react';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
 import { Dropdown } from '../components/Dropdown';
+import { ThemeToggle } from '../components/ThemeToggle';
 import VersionInfo from '../components/VersionInfo';
 
 const settingsVariants = {
@@ -52,6 +53,14 @@ export function SettingsPage() {
     const newSettings: AppSettings = {
       ...state.settings,
       historyRetentionMonths: months
+    };
+    updateSettings(newSettings);
+  };
+
+  const handleThemeChange = (theme: 'light' | 'dark' | 'system') => {
+    const newSettings: AppSettings = {
+      ...state.settings,
+      theme
     };
     updateSettings(newSettings);
   };
@@ -223,6 +232,18 @@ export function SettingsPage() {
 
       {/* Currency Settings */}
       <motion.div className="card" variants={cardVariants}>
+        <h2 className="mb-1 font-bold">Appearance</h2>
+        <div className="form-group">
+          <label className="form-label">Theme</label>
+          <ThemeToggle
+            theme={state.settings.theme}
+            onChange={handleThemeChange}
+          />
+        </div>
+      </motion.div>
+
+      {/* Currency Settings */}
+      <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">Currency</h2>
         <div className="form-group">
           <label className="form-label">Display Currency</label>
@@ -245,7 +266,7 @@ export function SettingsPage() {
             onChange={(value) => handleRetentionChange(parseInt(value))}
           />
         </div>
-        <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+        <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}>
           Currently storing {state.budgets.length} month{state.budgets.length !== 1 ? 's' : ''} of data
         </p>
       </motion.div>
@@ -257,7 +278,7 @@ export function SettingsPage() {
         {/* Export */}
         <div className="mb-2">
           <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Export Data</h3>
-          <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
             Download all your budget data as a JSON file for backup or transfer.
           </p>
           <motion.button
@@ -287,7 +308,7 @@ export function SettingsPage() {
         {/* Import */}
         <div className="mb-2">
           <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Import Data</h3>
-          <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
             Import budget data from a JSON file. This will replace all current data.
           </p>
           <motion.label 
@@ -312,7 +333,7 @@ export function SettingsPage() {
         {/* Clear Data */}
         <div>
           <h3 className="mb-1 font-bold" style={{ fontSize: '1rem' }}>Reset All Data</h3>
-          <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
             Permanently delete all budget data. This action cannot be undone.
           </p>
           <motion.button
@@ -332,7 +353,7 @@ export function SettingsPage() {
       {/* App Info */}
       <motion.div className="card" variants={cardVariants}>
         <h2 className="mb-1 font-bold">About</h2>
-        <div style={{ fontSize: '0.9rem', color: '#666' }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
           <VersionInfo />
         </div>
       </motion.div>

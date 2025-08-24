@@ -93,9 +93,6 @@ export function Dropdown({ options, value, onChange, placeholder = "Select...", 
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         whileTap={{ scale: disabled ? 1 : 0.98 }}
-        animate={{ 
-          borderColor: isOpen ? '#aaa' : '#ccc',
-        }}
         transition={{ duration: 0.1 }}
       >
         <span className="dropdown-text">

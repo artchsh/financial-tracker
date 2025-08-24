@@ -17,6 +17,7 @@ export interface MonthBudget {
 export interface AppSettings {
   currency: Currency;
   historyRetentionMonths: number;
+  theme: 'light' | 'dark' | 'system';
 }
 
 export interface Currency {

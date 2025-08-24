@@ -127,6 +127,14 @@ export function MainPage() {
   const totalSpent = currentBudget ? currentBudget.categories.reduce((sum, cat) => sum + cat.spent, 0) : 0;
   const isOverAllocated = currentBudget && totalAllocated > currentBudget.spendingLimit;
 
+  const getFreeMoneyCssClass = (limit: number, allocated: number) => {
+    const freeMoneyNew = limit - allocated;
+    const ratio = limit > 0 ? freeMoneyNew / limit : 0;
+    if (ratio < 0.1) return 'text-danger'; // Red when less than 10%
+    if (ratio < 0.3) return 'text-warning-orange'; // Orange when less than 30%
+    return 'text-success'; // Green when 30% or more
+  };
+
   if (state.loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -223,24 +231,13 @@ export function MainPage() {
         </div>
         <div className="flex flex-between mb-1">
           <span>Left:</span>
-          <span className={`font-bold ${freeMoney < 0 ? '' : ''}`}
-                style={{ color: freeMoney < 0 ? '#dc3545' : '#28a745' }}>
+          <span className={`font-bold ${freeMoney < 0 ? 'text-danger' : 'text-success'}`}>
             {formatCurrency(freeMoney)}
           </span>
         </div>
         <div className="flex flex-between">
           <span>Free Money:</span>
-          <span className={`font-bold`}
-                style={{ 
-                  color: (() => {
-                    const limit = currentBudget?.spendingLimit || 0;
-                    const freeMoneyNew = limit - totalAllocated;
-                    const ratio = limit > 0 ? freeMoneyNew / limit : 0;
-                    if (ratio < 0.1) return '#dc3545'; // Red when less than 10%
-                    if (ratio < 0.3) return '#fd7e14'; // Orange when less than 30%
-                    return '#28a745'; // Green when 30% or more
-                  })()
-                }}>
+          <span className={`font-bold ${getFreeMoneyCssClass(currentBudget?.spendingLimit || 0, totalAllocated)}`}>
             {formatCurrency((currentBudget?.spendingLimit || 0) - totalAllocated)}
           </span>
         </div>
@@ -285,8 +282,7 @@ export function MainPage() {
           ))
         ) : (
           <motion.div 
-            className="text-center card" 
-            style={{ color: '#666' }}
+            className="text-muted text-center card" 
             variants={summaryVariants}
           >
             <p>No categories yet</p>

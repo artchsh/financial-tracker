@@ -41,6 +41,14 @@ export function HistoryPage() {
     return { totalAllocated, totalSpent, freeMoney };
   };
 
+  const getFreeMoneyCssClass = (limit: number, allocated: number) => {
+    const freeMoneyNew = limit - allocated;
+    const ratio = limit > 0 ? freeMoneyNew / limit : 0;
+    if (ratio < 0.1) return 'text-danger'; // Red when less than 10%
+    if (ratio < 0.3) return 'text-warning-orange'; // Orange when less than 30%
+    return 'text-success'; // Green when 30% or more
+  };
+
   const handleViewMonth = (month: string) => {
     setCurrentMonth(month);
   };
@@ -66,8 +74,7 @@ export function HistoryPage() {
 
       {sortedBudgets.length === 0 ? (
         <motion.div 
-          className="text-center card" 
-          style={{ color: '#666' }}
+          className="text-muted text-center card" 
           variants={cardVariants}
         >
           <p>No budget history yet</p>
@@ -76,7 +83,8 @@ export function HistoryPage() {
       ) : (
         <div>
           <motion.p 
-            style={{ color: '#666', marginBottom: '1rem' }}
+            className="text-muted"
+            style={{ marginBottom: '1rem' }}
             variants={cardVariants}
           >
             Showing {sortedBudgets.length} month{sortedBudgets.length !== 1 ? 's' : ''}
@@ -109,7 +117,7 @@ export function HistoryPage() {
                     {isCurrentMonth && (
                       <span style={{ 
                         fontSize: '0.8rem', 
-                        color: '#666', 
+                        color: 'var(--color-text-muted)', 
                         fontWeight: 'normal',
                         marginLeft: '0.5rem'
                       }}>
@@ -117,7 +125,7 @@ export function HistoryPage() {
                       </span>
                     )}
                   </h2>
-                  <span style={{ fontSize: '0.9rem', color: '#666' }}>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
                     {budget.categories.length} categor{budget.categories.length !== 1 ? 'ies' : 'y'}
                   </span>
                 </div>
@@ -137,21 +145,13 @@ export function HistoryPage() {
                   </div>
                   <div className="flex flex-between" style={{ fontSize: '0.9rem' }}>
                     <span>Left:</span>
-                    <span style={{ color: freeMoney < 0 ? '#dc3545' : '#28a745' }}>
+                    <span className={freeMoney < 0 ? 'text-danger' : 'text-success'}>
                       {formatCurrency(freeMoney)}
                     </span>
                   </div>
                   <div className="flex flex-between" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
                     <span>Free Money:</span>
-                    <span style={{ 
-                      color: (() => {
-                        const freeMoneyNew = budget.spendingLimit - totalAllocated;
-                        const ratio = budget.spendingLimit > 0 ? freeMoneyNew / budget.spendingLimit : 0;
-                        if (ratio < 0.1) return '#dc3545'; // Red when less than 10%
-                        if (ratio < 0.3) return '#fd7e14'; // Orange when less than 30%
-                        return '#28a745'; // Green when 30% or more
-                      })()
-                    }}>
+                    <span className={getFreeMoneyCssClass(budget.spendingLimit, totalAllocated)}>
                       {formatCurrency(budget.spendingLimit - totalAllocated)}
                     </span>
                   </div>
@@ -159,7 +159,7 @@ export function HistoryPage() {
 
                 {budget.categories.length > 0 && (
                   <div>
-                    <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>
                       Categories:
                     </div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
@@ -199,8 +199,8 @@ export function HistoryPage() {
 
       {/* Storage Info */}
       <motion.div 
-        className="card" 
-        style={{ marginTop: '2rem', fontSize: '0.9rem', color: '#666' }}
+        className="text-muted card" 
+        style={{ marginTop: '2rem', fontSize: '0.9rem' }}
         variants={cardVariants}
       >
         <div className="flex flex-row flex-center w-full">

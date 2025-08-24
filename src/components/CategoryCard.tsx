@@ -113,8 +113,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
         <div className="flex flex-between mb-1">
           <span>Spent:</span>
           <motion.span 
-            className={isOverspent ? 'font-bold' : ''}
-            style={{ color: isOverspent ? '#dc3545' : 'inherit' }}
+            className={`${isOverspent ? 'font-bold text-danger' : ''}`}
             key={category.spent}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
@@ -126,8 +125,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
         <div className="flex flex-between">
           <span>Remaining:</span>
           <motion.span 
-            className={`font-bold ${remaining < 0 ? '' : ''}`}
-            style={{ color: remaining < 0 ? '#dc3545' : '#28a745' }}
+            className={`font-bold ${remaining < 0 ? 'text-danger' : 'text-success'}`}
             key={remaining}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}

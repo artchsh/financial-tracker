@@ -21,7 +21,8 @@ const initialState: AppState = {
   budgets: [],
   settings: {
     currency: { code: 'KZT', symbol: '₸', name: 'Kazakhstani Tenge' },
-    historyRetentionMonths: 12
+    historyRetentionMonths: 12,
+    theme: 'system'
   },
   currentMonth: getCurrentMonth(),
   loading: true,
@@ -96,6 +97,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Theme management
+  useEffect(() => {
+    applyTheme(state.settings.theme);
+  }, [state.settings.theme]);
+
+  const applyTheme = (theme: 'light' | 'dark' | 'system') => {
+    const root = document.documentElement;
+    
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.className = systemTheme === 'dark' ? 'dark' : '';
+    } else {
+      root.className = theme === 'dark' ? 'dark' : '';
+    }
+  };
+
+  // Listen for system theme changes when in system mode
+  useEffect(() => {
+    if (state.settings.theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = () => applyTheme('system');
+      
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, [state.settings.theme]);
 
   const loadData = async () => {
     try {

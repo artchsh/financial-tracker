@@ -59,7 +59,7 @@ export function MonthPicker({ currentMonth, onMonthChange }: MonthPickerProps) {
         disabled={isCreating}
       />
       {isCreating && (
-        <div className="mt-1" style={{ fontSize: '0.9rem', color: '#666' }}>
+        <div className="mt-1 text-muted" style={{ fontSize: '0.9rem' }}>
           Creating budget from previous month...
         </div>
       )}
