@@ -1,117 +1,117 @@
 /* CSS Variables for Light Theme */
 :root {
   /* Background colors */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #ffffff;
-  --color-bg-overlay: rgba(0, 0, 0, 0.5);
-  --color-bg-glass: rgba(255, 255, 255, 0.78);
-  --color-bg-hover: #f5f5f5;
-  --color-bg-selected: #e3f2fd;
-  --color-bg-danger-hover: #fff5f5;
-  --color-bg-warning: #fff3cd;
-  --color-bg-error: #f8d7da;
-  --color-bg-input-disabled: #f5f5f5;
+  --color-bg-primary: oklch(1 0 0 / 1);
+  --color-bg-secondary: oklch(1 0 0 / 1);
+  --color-bg-overlay: oklch(0 0 0 / 0.5);
+  --color-bg-glass: oklch(0.96 0.005 0 / 0.78);
+  --color-bg-hover: oklch(0.96 0.006 0 / 1);
+  --color-bg-selected: oklch(0.96 0.03 24 / 1);
+  --color-bg-danger-hover: oklch(0.99 0.01 20 / 1);
+  --color-bg-warning: oklch(0.98 0.06 95 / 1);
+  --color-bg-error: oklch(0.92 0.05 25 / 1);
+  --color-bg-input-disabled: oklch(0.96 0.006 0 / 1);
 
   /* Text colors */
-  --color-text-primary: #000000;
-  --color-text-secondary: #666666;
-  --color-text-muted: #666666;
-  --color-text-inverse: #ffffff;
-  --color-text-warning: #856404;
-  --color-text-warning-orange: #fd7e14;
-  --color-text-error: #721c24;
-  --color-text-success: #28a745;
-  --color-text-danger: #dc3545;
+  --color-text-primary: oklch(0 0 0 / 1);
+  --color-text-secondary: oklch(0.33 0.004 0 / 1);
+  --color-text-muted: oklch(0.33 0.004 0 / 1);
+  --color-text-inverse: oklch(1 0 0 / 1);
+  --color-text-warning: oklch(0.54 0.12 95 / 1);
+  --color-text-warning-orange: oklch(0.63 0.25 95 / 1);
+  --color-text-error: oklch(0.25 0.16 24 / 1);
+  --color-text-success: oklch(0.56 0.21 145 / 1);
+  --color-text-danger: oklch(0.56 0.18 25 / 1);
 
   /* Border colors */
-  --color-border-primary: #e0e0e0;
-  --color-border-secondary: #ccc;
-  --color-border-hover: #aaa;
-  --color-border-glass: rgba(0, 0, 0, 0.06);
-  --color-border-separator: #f0f0f0;
-  --color-border-warning: #ffeaa7;
-  --color-border-error: #f5c6cb;
+  --color-border-primary: oklch(0.94 0.006 0 / 1);
+  --color-border-secondary: oklch(0.90 0.006 0 / 1);
+  --color-border-hover: oklch(0.80 0.006 0 / 1);
+  --color-border-glass: oklch(0 0 0 / 0.06);
+  --color-border-separator: oklch(0.97 0.005 0 / 1);
+  --color-border-warning: oklch(0.96 0.08 95 / 1);
+  --color-border-error: oklch(0.92 0.06 25 / 1);
 
   /* Button colors */
-  --color-btn-primary-bg: #000000;
-  --color-btn-primary-text: #ffffff;
-  --color-btn-secondary-bg: #ffffff;
-  --color-btn-secondary-text: #000000;
-  --color-btn-secondary-border: #000000;
-  --color-btn-danger-bg: #dc3545;
-  --color-btn-danger-text: #ffffff;
-  --color-btn-ghost-text: #000000;
-  --color-btn-circle-bg: #e0e0e0;
-  --color-btn-circle-text: #6e6e6e;
+  --color-btn-primary-bg: oklch(0 0 0 / 1);
+  --color-btn-primary-text: oklch(1 0 0 / 1);
+  --color-btn-secondary-bg: oklch(1 0 0 / 1);
+  --color-btn-secondary-text: oklch(0 0 0 / 1);
+  --color-btn-secondary-border: oklch(0 0 0 / 1);
+  --color-btn-danger-bg: oklch(0.56 0.18 30 / 1);
+  --color-btn-danger-text: oklch(1 0 0 / 1);
+  --color-btn-ghost-text: oklch(0 0 0 / 1);
+  --color-btn-circle-bg: oklch(0.94 0.006 0 / 1);
+  --color-btn-circle-text: oklch(0.45 0.004 0 / 1);
 
   /* Navigation colors */
-  --color-nav-text: #666666;
-  --color-nav-text-active: #000000;
+  --color-nav-text: oklch(0.33 0.004 0 / 1);
+  --color-nav-text-active: oklch(0 0 0 / 1);
 
   /* Shadow colors */
-  --color-shadow: rgba(0, 0, 0, 0.04);
-  --color-shadow-strong: rgba(0, 0, 0, 0.15);
+  --color-shadow: oklch(0 0 0 / 0.04);
+  --color-shadow-strong: oklch(0 0 0 / 0.15);
 
   /* Focus colors */
-  --color-focus: #007AFF;
+  --color-focus: oklch(0.57 0.24 260 / 1);
 }
 
 /* Dark Theme Variables */
 .dark {
   /* Background colors */
-  --color-bg-primary: #000000;
-  --color-bg-secondary: #000000;
-  --color-bg-overlay: rgba(0, 0, 0, 0.8);
-  --color-bg-glass: rgba(0, 0, 0, 0.85);
-  --color-bg-hover: #1a1a1a;
-  --color-bg-selected: #0d2244;
-  --color-bg-danger-hover: #1a0000;
-  --color-bg-warning: #1a1500;
-  --color-bg-error: #1a0008;
-  --color-bg-input-disabled: #1a1a1a;
+  --color-bg-primary: oklch(0 0 0 / 1);
+  --color-bg-secondary: oklch(0 0 0 / 1);
+  --color-bg-overlay: oklch(0 0 0 / 0.8);
+  --color-bg-glass: oklch(0 0 0 / 0.85);
+  --color-bg-hover: oklch(0.035 0.004 0 / 1);
+  --color-bg-selected: oklch(0.12 0.06 20 / 1);
+  --color-bg-danger-hover: oklch(0.03 0.02 20 / 1);
+  --color-bg-warning: oklch(0.04 0.02 90 / 1);
+  --color-bg-error: oklch(0.03 0.02 340 / 1);
+  --color-bg-input-disabled: oklch(0.035 0.004 0 / 1);
 
   /* Text colors */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #b3b3b3;
-  --color-text-muted: #888888;
-  --color-text-inverse: #000000;
-  --color-text-warning: #fbbf24;
-  --color-text-warning-orange: #fb923c;
-  --color-text-error: #f87171;
-  --color-text-success: #10b981;
-  --color-text-danger: #ef4444;
+  --color-text-primary: oklch(1 0 0 / 1);
+  --color-text-secondary: oklch(0.7 0.005 0 / 1);
+  --color-text-muted: oklch(0.55 0.005 0 / 1);
+  --color-text-inverse: oklch(0 0 0 / 1);
+  --color-text-warning: oklch(0.80 0.16 95 / 1);
+  --color-text-warning-orange: oklch(0.65 0.18 95 / 1);
+  --color-text-error: oklch(0.75 0.12 25 / 1);
+  --color-text-success: oklch(0.60 0.23 150 / 1);
+  --color-text-danger: oklch(0.55 0.20 25 / 1);
 
   /* Border colors */
-  --color-border-primary: #3a3a3a;
-  --color-border-secondary: #4a4a4a;
-  --color-border-hover: #5a5a5a;
-  --color-border-glass: rgba(255, 255, 255, 0.1);
-  --color-border-separator: #3a3a3a;
-  --color-border-warning: #92400e;
-  --color-border-error: #991b1b;
+  --color-border-primary: oklch(0.22 0.006 0 / 1);
+  --color-border-secondary: oklch(0.28 0.006 0 / 1);
+  --color-border-hover: oklch(1 0 0 / 0.12);
+  --color-border-glass: oklch(1 0 0 / 0.1);
+  --color-border-separator: oklch(0.22 0.006 0 / 1);
+  --color-border-warning: oklch(0.36 0.18 95 / 1);
+  --color-border-error: oklch(0.30 0.16 20 / 1);
 
   /* Button colors */
-  --color-btn-primary-bg: #ffffff;
-  --color-btn-primary-text: #000000;
-  --color-btn-secondary-bg: #2d2d2d;
-  --color-btn-secondary-text: #ffffff;
-  --color-btn-secondary-border: #343434;
-  --color-btn-danger-bg: #dc2626;
-  --color-btn-danger-text: #ffffff;
-  --color-btn-ghost-text: #ffffff;
-  --color-btn-circle-bg: #4a4a4a;
-  --color-btn-circle-text: #b3b3b3;
+  --color-btn-primary-bg: oklch(1 0 0 / 1);
+  --color-btn-primary-text: oklch(0 0 0 / 1);
+  --color-btn-secondary-bg: oklch(0.17 0.006 0 / 1);
+  --color-btn-secondary-text: oklch(1 0 0 / 1);
+  --color-btn-secondary-border: oklch(0.20 0.006 0 / 1);
+  --color-btn-danger-bg: oklch(0.55 0.19 25 / 1);
+  --color-btn-danger-text: oklch(1 0 0 / 1);
+  --color-btn-ghost-text: oklch(1 0 0 / 1);
+  --color-btn-circle-bg: oklch(0.28 0.006 0 / 1);
+  --color-btn-circle-text: oklch(0.7 0.005 0 / 1);
 
   /* Navigation colors */
-  --color-nav-text: #888888;
-  --color-nav-text-active: #ffffff;
+  --color-nav-text: oklch(0.55 0.005 0 / 1);
+  --color-nav-text-active: oklch(1 0 0 / 1);
 
   /* Shadow colors */
-  --color-shadow: rgba(0, 0, 0, 0.2);
-  --color-shadow-strong: rgba(0, 0, 0, 0.4);
+  --color-shadow: oklch(0 0 0 / 0.2);
+  --color-shadow-strong: oklch(0 0 0 / 0.4);
 
   /* Focus colors */
-  --color-focus: #60a5fa;
+  --color-focus: oklch(0.75 0.21 250 / 1);
 }
 
 /* Global Styles */
@@ -232,7 +232,7 @@ body {
 /* Common Components */
 .card {
   background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-primary);
+  border: 1px solid var(--color-border-glass);
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -545,7 +545,7 @@ body {
 .dropdown-trigger {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--color-border-secondary);
+  border: 1px solid var(--color-border-glass);
   border-radius: 6px;
   font-size: 1rem;
   background: var(--color-bg-primary);

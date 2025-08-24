@@ -8,7 +8,7 @@
   "module": "src/index.tsx",
   "scripts": {
     "dev": "bun --hot src/index.tsx",
-    "build": "mkdir dist dist/public && bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*' && cp -r public/* dist/public",
+  "build": "mkdir dist dist/public && bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*' && cp -r public/* dist/public && cp public/sw.js dist/sw.js",
     "start": "NODE_ENV=production bun src/index.tsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"

@@ -2,15 +2,17 @@
 const STATIC_CACHE = 'ft-static-v1';
 const RUNTIME_CACHE = 'ft-runtime-v1';
 
-const VERSION_URL = '/version.json';
+// Must match how the app serves the file (we serve it under /public/version.json)
+const VERSION_URL = '/public/version.json';
 
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   // The app bundle filename is hashed by bundlers; runtime cache will handle it.
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
+  // Note: assets live under /public in this app
+  '/public/manifest.json',
+  '/public/icons/icon-192.png',
+  '/public/icons/icon-512.png',
   VERSION_URL,
 ];
 
@@ -148,7 +150,14 @@ self.addEventListener('message', async (event) => {
   const { type } = event.data || {};
   if (type === 'SKIP_WAITING') {
     await self.skipWaiting();
+    // Try to include the latest version payload for clients
+    let versionPayload = null;
+    try {
+      const res = await fetch(VERSION_URL, { cache: 'no-store' });
+      if (res.ok) versionPayload = await res.json();
+    } catch {}
+
     const clients = await self.clients.matchAll({ type: 'window' });
-    clients.forEach((c) => c.postMessage({ type: 'RELOAD_REQUIRED' }));
+    clients.forEach((c) => c.postMessage({ type: 'RELOAD_REQUIRED', version: versionPayload }));
   }
 });

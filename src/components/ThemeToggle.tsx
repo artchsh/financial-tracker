@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon, Monitor, LucideSun, LucideMoon, LucideLaptop } from 'lucide-react';
 import { Dropdown } from './Dropdown';
 
 interface ThemeToggleProps {
@@ -11,15 +11,15 @@ export function ThemeToggle({ theme, onChange }: ThemeToggleProps) {
   const themeOptions = [
     {
       value: 'light',
-      label: '☀️ Light',
+      label: <span className='flex gap-1 align-center'><LucideSun />Light</span>,
     },
     {
       value: 'dark',
-      label: '🌙 Dark',
+      label: <span className='flex gap-1 align-center'><LucideMoon />Dark</span>,
     },
     {
       value: 'system',
-      label: '💻 System',
+      label: <span className='flex gap-1 align-center'><LucideLaptop />System</span>,
     },
   ];
 

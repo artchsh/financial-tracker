@@ -31,7 +31,8 @@ export function App() {
   useEffect(() => {
     // Register service worker for PWA functionality in production
     if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      const swPath = new URL('/public/sw.js', window.location.origin + window.location.pathname).pathname;
+      // Register at site root so SW scope covers the whole app
+      const swPath = new URL('/sw.js', window.location.origin).pathname;
       navigator.serviceWorker.register(swPath).catch(() => {});
     }
   }, []);

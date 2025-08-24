@@ -105,13 +105,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const applyTheme = (theme: 'light' | 'dark' | 'system') => {
     const root = document.documentElement;
-    
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.className = systemTheme === 'dark' ? 'dark' : '';
-    } else {
-      root.className = theme === 'dark' ? 'dark' : '';
-    }
+
+    const resolveTheme = () => {
+      if (theme === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return theme;
+    };
+
+    const effectiveTheme = resolveTheme();
+
+    // Toggle root class for CSS
+    root.className = effectiveTheme === 'dark' ? 'dark' : '';
+
+    // Update browser UI theme colors
+    const color = effectiveTheme === 'dark' ? '#000000' : '#ffffff';
+
+    const ensureMeta = (name: string, value: string) => {
+      const meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (meta) {
+        meta.setAttribute('content', value);
+      } else {
+        const created = document.createElement('meta');
+        created.name = name;
+        created.content = value;
+        document.head.appendChild(created);
+      }
+    };
+
+    ensureMeta('theme-color', color);
+    ensureMeta('msapplication-TileColor', color);
   };
 
   // Listen for system theme changes when in system mode
