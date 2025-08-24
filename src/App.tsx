@@ -54,7 +54,7 @@ export function App() {
     <AppProvider>
       <Analytics />
       <SpeedInsights />
-      <div className="app">
+
         {updateAvailable && (
           <div className="update-banner" role="status">
             <span>New version{remote?.version ? ` ${remote.version}` : ''} available.</span>
@@ -76,7 +76,7 @@ export function App() {
           </AnimatePresence>
         </div>
         <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
-      </div>
+
     </AppProvider>
   );
 }
