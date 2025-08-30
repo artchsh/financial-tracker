@@ -8,7 +8,7 @@
   "module": "src/index.tsx",
   "scripts": {
     "dev": "bun --hot src/index.tsx",
-  "build": "mkdir dist dist/public && bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*' && cp -r public/* dist/public && cp public/sw.js dist/sw.js",
+    "build": "mkdir dist dist/public && bun run build.ts ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*' && cp -r public/* dist/public && cp public/sw.js dist/sw.js",
     "start": "NODE_ENV=production bun src/index.tsx",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
@@ -16,15 +16,17 @@
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "bun-plugin-tailwind": "^0.0.15",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.539.0",
-    "react": "^19",
-    "react-dom": "^19"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "@types/bun": "latest",
-    "gh-pages": "^6.1.1"
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "gh-pages": "^6.3.0"
   }
 }

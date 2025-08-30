@@ -6,6 +6,8 @@ import { Category, MonthBudget } from '../types';
 import { CategoryCard } from '../components/CategoryCard';
 import { CategoryModal } from '../components/CategoryModal';
 import { MonthPicker } from '../components/MonthPicker';
+import SummaryCard from '@/components/cards/summary-card';
+import TopHeader from '@/components/top-header';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -20,8 +22,8 @@ const containerVariants = {
 
 const summaryVariants = {
   hidden: { opacity: 0, y: -20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.25 }
   }
@@ -61,7 +63,7 @@ export function MainPage() {
     };
 
     let updatedCategories;
-    
+
     if (editingCategory) {
       // Update existing category
       updatedCategories = budget.categories.map(cat =>
@@ -100,7 +102,7 @@ export function MainPage() {
 
   const handleSaveSpendingLimit = () => {
     const limit = parseFloat(spendingLimit) || 0;
-    
+
     if (limit < 0) {
       alert('Spending limit cannot be negative');
       return;
@@ -145,150 +147,151 @@ export function MainPage() {
       initial="hidden"
       animate="visible"
     >
-      <motion.h1 
-        className="mb-2 font-large font-bold"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        Budget Tracker
-      </motion.h1>
+      <TopHeader title='Budget Tracker' />
 
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.1, duration: 0.25 }}
-      >
-        <MonthPicker
-          currentMonth={state.currentMonth}
-          onMonthChange={setCurrentMonth}
-        />
-      </motion.div>
 
-      {/* Spending Limit */}
-      <motion.div 
-        className="card"
-        variants={summaryVariants}
-      >
-        <div className="flex flex-between mb-1 align-center">
-          <h2 className="font-bold">Monthly Limit</h2>
-          <motion.button
-            className="button"
-            style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', background: 'none', color: 'black' }}
-            onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            title="Edit spending limit"
+      {/* Spending, Summary and Categories sections */}
+      <motion.div layout className='flex flex-col gap-2'>
+
+        {/* Spending and Summary sections */}
+        <motion.div layout className='flex flex-col gap-1'>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1, duration: 0.25 }}
           >
-            <Edit3 size={16} />
-          </motion.button>
-        </div>
-
-        {showSpendingLimitEdit ? (
-          <div>
-            <div className="flex gap-1 align-center">
-              <input
-                type="number"
-                className="input"
-                value={spendingLimit}
-                onChange={(e) => setSpendingLimit(e.target.value)}
-                placeholder="0"
-                min="0"
-                step="0.01"
-              />
-              <button className="button" onClick={handleSaveSpendingLimit}>
-                Save
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="font-large">
-            {formatCurrency(currentBudget?.spendingLimit || 0)}
-          </div>
-        )}
-
-        {isOverAllocated && (
-          <div className="mt-1 warning">
-            <AlertTriangle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} /> 
-            You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
-          </div>
-        )}
-      </motion.div>
-
-      {/* Summary */}
-      <motion.div 
-        className="card"
-        variants={summaryVariants}
-      >
-        <h2 className="mb-1 font-bold">Summary</h2>
-        <div className="flex flex-between mb-1">
-          <span>Total Allocated:</span>
-          <span className="font-bold">{formatCurrency(totalAllocated)}</span>
-        </div>
-        <div className="flex flex-between mb-1">
-          <span>Total Spent:</span>
-          <span className="font-bold">{formatCurrency(totalSpent)}</span>
-        </div>
-        <div className="flex flex-between mb-1">
-          <span>Left:</span>
-          <span className={`font-bold ${freeMoney < 0 ? 'text-danger' : 'text-success'}`}>
-            {formatCurrency(freeMoney)}
-          </span>
-        </div>
-        <div className="flex flex-between">
-          <span>Free Money:</span>
-          <span className={`font-bold ${getFreeMoneyCssClass(currentBudget?.spendingLimit || 0, totalAllocated)}`}>
-            {formatCurrency((currentBudget?.spendingLimit || 0) - totalAllocated)}
-          </span>
-        </div>
-      </motion.div>
-
-      {/* Categories */}
-      <motion.div 
-        className="flex flex-between mb-2 align-center"
-        variants={summaryVariants}
-      >
-        <h2 className="font-bold">Categories</h2>
-        <motion.button
-          className="button button-ghost"
-          style={{ padding: "0.4rem" }}
-          onClick={() => {
-            setEditingCategory(undefined);
-            setIsModalOpen(true);
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <LucideDiamondPlus />
-        </motion.button>
-      </motion.div>
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {currentBudget && currentBudget.categories.length > 0 ? (
-          currentBudget.categories.map(category => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onEdit={(cat) => {
-                setEditingCategory(cat);
-                setIsModalOpen(true);
-              }}
-              onDelete={handleDeleteCategory}
+            <MonthPicker
+              currentMonth={state.currentMonth}
+              onMonthChange={setCurrentMonth}
             />
-          ))
-        ) : (
-          <motion.div 
-            className="text-muted text-center card" 
+          </motion.div>
+          {/* Spending Limit */}
+          <motion.div
+            className="card"
             variants={summaryVariants}
           >
-            <p>No categories yet</p>
-            <p style={{ fontSize: '0.9rem' }}>Add your first category to start tracking your budget</p>
+            <div className="flex justify-between align-center">
+              <h2 className="font-bold">Monthly Limit</h2>
+              <motion.button
+                className="button"
+                style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', background: 'none', color: 'black' }}
+                onClick={() => setShowSpendingLimitEdit(!showSpendingLimitEdit)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title="Edit spending limit"
+              >
+                <Edit3 size={16} />
+              </motion.button>
+            </div>
+
+            <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.18 }}>
+              {showSpendingLimitEdit ? (
+                <motion.div
+                  key="edit"
+                  layout
+                  initial={{ opacity: 0, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 0 }}
+                  transition={{ duration: 0.18 }}
+                >
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      className="input"
+                      value={spendingLimit}
+                      onChange={(e) => setSpendingLimit(e.target.value)}
+                      placeholder="0"
+                      min="0"
+                      step="0.01"
+                    />
+                    <button className="button" onClick={handleSaveSpendingLimit}>
+                      Save
+                    </button>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="view"
+                  layout
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="font-large"
+                >
+                  {formatCurrency(currentBudget?.spendingLimit || 0)}
+                </motion.div>
+              )}
+            </motion.div>
+
+            {isOverAllocated && (
+              <div className="mt-1 warning">
+                <AlertTriangle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                You've allocated {formatCurrency(totalAllocated - (currentBudget?.spendingLimit || 0))} more than your limit
+              </div>
+            )}
           </motion.div>
-        )}
+
+          {/* Summary */}
+          <SummaryCard
+            totalAllocated={totalAllocated}
+            totalSpent={totalSpent}
+            currentBudget={currentBudget}
+            formatCurrency={formatCurrency}
+            getFreeMoneyCssClass={getFreeMoneyCssClass}
+            freeMoney={freeMoney}
+          />
+        </motion.div>
+
+        {/* Categories */}
+        <motion.div layout className='flex flex-col gap-1'>
+          <motion.div
+            className="flex justify-between align-center"
+            variants={summaryVariants}
+          >
+            <h2 className="font-bold">Categories</h2>
+            <motion.button
+              className="button button-ghost"
+              style={{ padding: "0.4rem" }}
+              onClick={() => {
+                setEditingCategory(undefined);
+                setIsModalOpen(true);
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <LucideDiamondPlus />
+            </motion.button>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className='flex flex-col gap-2'
+          >
+            {currentBudget && currentBudget.categories.length > 0 ? (
+              currentBudget.categories.map(category => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onEdit={(cat) => {
+                    setEditingCategory(cat);
+                    setIsModalOpen(true);
+                  }}
+                  onDelete={handleDeleteCategory}
+                />
+              ))
+            ) : (
+              <motion.div
+                className="text-muted text-center card"
+                variants={summaryVariants}
+              >
+                <p>No categories yet</p>
+                <p style={{ fontSize: '0.9rem' }}>Add your first category to start tracking your budget</p>
+              </motion.div>
+            )}
+          </motion.div>
+        </motion.div>
       </motion.div>
 
       <CategoryModal

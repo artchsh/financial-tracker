@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, History, Settings } from 'lucide-react';
+import { div } from 'framer-motion/client';
 
 type Page = 'main' | 'history' | 'settings';
 
@@ -10,17 +11,17 @@ interface NavigationProps {
 }
 
 const navItemVariants = {
-  inactive: { 
+  inactive: {
     scale: 1,
     opacity: 0.7,
     transition: { duration: 0.1 }
   },
-  active: { 
+  active: {
     scale: 1.1,
     opacity: 1,
     transition: { duration: 0.1 }
   },
-  tap: { 
+  tap: {
     scale: 0.95,
     transition: { duration: 0.05 }
   }
@@ -34,66 +35,68 @@ const iconVariants = {
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
   return (
-    <nav className="bottom-nav">
-      <motion.button
-        className={`nav-item ${currentPage === 'main' ? 'active' : ''}`}
-        onClick={() => onPageChange('main')}
-        variants={navItemVariants}
-        initial="inactive"
-        animate={currentPage === 'main' ? 'active' : 'inactive'}
-        whileTap="tap"
-        whileHover={{ scale: 1.05 }}
-      >
-        <motion.div 
-          className="nav-icon"
-          variants={iconVariants}
+    <div className='bottom-nav-wrapper'>
+      <nav className="bottom-nav">
+        <motion.button
+          className={`nav-item ${currentPage === 'main' ? 'active' : ''}`}
+          onClick={() => onPageChange('main')}
+          variants={navItemVariants}
+          initial="inactive"
           animate={currentPage === 'main' ? 'active' : 'inactive'}
-          whileHover="hover"
+          whileTap="tap"
+          whileHover={{ scale: 1.05 }}
         >
-          <PieChart size={24} />
-        </motion.div>
-        <div className="nav-label">Budget</div>
-      </motion.button>
-      
-      <motion.button
-        className={`nav-item ${currentPage === 'history' ? 'active' : ''}`}
-        onClick={() => onPageChange('history')}
-        variants={navItemVariants}
-        initial="inactive"
-        animate={currentPage === 'history' ? 'active' : 'inactive'}
-        whileTap="tap"
-        whileHover={{ scale: 1.05 }}
-      >
-        <motion.div 
-          className="nav-icon"
-          variants={iconVariants}
+          <motion.div
+            className="nav-icon"
+            variants={iconVariants}
+            animate={currentPage === 'main' ? 'active' : 'inactive'}
+            whileHover="hover"
+          >
+            <PieChart size={24} />
+          </motion.div>
+          <div className="nav-label">Budget</div>
+        </motion.button>
+
+        <motion.button
+          className={`nav-item ${currentPage === 'history' ? 'active' : ''}`}
+          onClick={() => onPageChange('history')}
+          variants={navItemVariants}
+          initial="inactive"
           animate={currentPage === 'history' ? 'active' : 'inactive'}
-          whileHover="hover"
+          whileTap="tap"
+          whileHover={{ scale: 1.05 }}
         >
-          <History size={24} />
-        </motion.div>
-        <div className="nav-label">History</div>
-      </motion.button>
-      
-      <motion.button
-        className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
-        onClick={() => onPageChange('settings')}
-        variants={navItemVariants}
-        initial="inactive"
-        animate={currentPage === 'settings' ? 'active' : 'inactive'}
-        whileTap="tap"
-        whileHover={{ scale: 1.05 }}
-      >
-        <motion.div 
-          className="nav-icon"
-          variants={iconVariants}
+          <motion.div
+            className="nav-icon"
+            variants={iconVariants}
+            animate={currentPage === 'history' ? 'active' : 'inactive'}
+            whileHover="hover"
+          >
+            <History size={24} />
+          </motion.div>
+          <div className="nav-label">History</div>
+        </motion.button>
+
+        <motion.button
+          className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
+          onClick={() => onPageChange('settings')}
+          variants={navItemVariants}
+          initial="inactive"
           animate={currentPage === 'settings' ? 'active' : 'inactive'}
-          whileHover="hover"
+          whileTap="tap"
+          whileHover={{ scale: 1.05 }}
         >
-          <Settings size={24} />
-        </motion.div>
-        <div className="nav-label">Settings</div>
-      </motion.button>
-    </nav>
+          <motion.div
+            className="nav-icon"
+            variants={iconVariants}
+            animate={currentPage === 'settings' ? 'active' : 'inactive'}
+            whileHover="hover"
+          >
+            <Settings size={24} />
+          </motion.div>
+          <div className="nav-label">Settings</div>
+        </motion.button>
+      </nav>
+    </div>
   );
 }

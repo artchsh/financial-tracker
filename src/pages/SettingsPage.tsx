@@ -6,6 +6,7 @@ import { CURRENCIES, AppSettings } from '../types';
 import { Dropdown } from '../components/Dropdown';
 import { ThemeToggle } from '../components/ThemeToggle';
 import VersionInfo from '../components/VersionInfo';
+import TopHeader from '@/components/top-header';
 
 const settingsVariants = {
   hidden: { opacity: 0 },
@@ -221,14 +222,7 @@ export function SettingsPage() {
       initial="hidden"
       animate="visible"
     >
-      <motion.h1 
-        className="mb-2 font-large font-bold"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        Settings
-      </motion.h1>
+      <TopHeader title='Settings'/>
 
       {/* Currency Settings */}
       <motion.div className="card" variants={cardVariants}>

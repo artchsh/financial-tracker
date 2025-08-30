@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* CSS Variables for Light Theme */
 :root {
   /* Background colors */
@@ -180,14 +182,20 @@ body {
 }
 
 /* Navigation */
+.bottom-nav-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+
+}
+
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   height: 5.4rem;
-  z-index: 100;
+  
   margin-bottom: env(safe-area-inset-bottom);
   min-height: 2rem;
   width: calc(100vw - env(safe-area-inset-bottom) - env(safe-area-inset-bottom));
@@ -245,7 +253,6 @@ body {
   border: 1px solid var(--color-border-glass);
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 1rem;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -362,10 +369,6 @@ body {
   transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
 .form-label {
   display: block;
   margin-bottom: 0.5rem;
@@ -480,23 +483,6 @@ body {
     padding: 1rem;
   }
 }
-
-/* Utility Classes */
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.font-bold { font-weight: 600; }
-.font-large { font-size: 1.125rem; }
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.flex { display: flex; }
-.flex-row { flex-direction: row; }
-.flex-between { justify-content: space-between; }
-.flex-center { justify-content: center; }
-.align-center { align-items: center; }
 
 /* Animation Performance Enhancements */
 .card,

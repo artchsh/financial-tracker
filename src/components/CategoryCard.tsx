@@ -80,8 +80,8 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
       whileHover="hover"
       layout
     >
-      <div className="flex flex-between mb-1 align-center">
-        <div className="flex gap-1 align-center">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-1">
           <motion.div
             style={{
               width: '12px',
@@ -97,8 +97,8 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
         <ActionMenu items={actionItems} />
       </div>
 
-      <motion.div className="mb-1" layout>
-        <div className="flex flex-between mb-1">
+      <motion.div className="flex flex-col gap-1" layout>
+        <div className="flex justify-between">
           <span>Allocated:</span>
           <motion.span 
             className="font-bold"
@@ -110,7 +110,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             {formatCurrency(category.allocated)}
           </motion.span>
         </div>
-        <div className="flex flex-between mb-1">
+        <div className="flex justify-between">
           <span>Spent:</span>
           <motion.span 
             className={`${isOverspent ? 'font-bold text-danger' : ''}`}
@@ -122,7 +122,7 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
             {formatCurrency(category.spent)}
           </motion.span>
         </div>
-        <div className="flex flex-between">
+        <div className="flex justify-between">
           <span>Remaining:</span>
           <motion.span 
             className={`font-bold ${remaining < 0 ? 'text-danger' : 'text-success'}`}
