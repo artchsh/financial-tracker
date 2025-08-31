@@ -6,7 +6,6 @@ import SummaryCard from '@/components/cards/summary-card';
 import TopHeader from '@/components/top-header';
 import MonthlyLimitCard from '@/components/cards/monthly-limit-card';
 import CategoriesSection from '@/components/sections/categories-section';
-import { getFreeMoneyCssClass } from '@/utils/budget';
 import { MonthPicker } from '@/components/MonthPicker';
 import { CategoryModal } from '@/components/CategoryModal';
 
@@ -152,7 +151,6 @@ export function MainPage() {
             totalSpent={totalSpent}
             currentBudget={currentBudget}
             formatCurrency={formatCurrency}
-            getFreeMoneyCssClass={getFreeMoneyCssClass}
             freeMoney={freeMoney}
           />
         </motion.div>

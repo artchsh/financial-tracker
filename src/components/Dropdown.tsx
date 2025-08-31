@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { dropdownVariants, optionVariants } from '@/utils/animations';
 
 interface DropdownOption {
   value: string;
@@ -15,40 +16,6 @@ interface DropdownProps {
   disabled?: boolean;
   className?: string;
 }
-
-const dropdownVariants = {
-  hidden: {
-    opacity: 0,
-    y: -10,
-    scale: 0.95,
-    transition: {
-      duration: 0.075
-    }
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.1,
-      ease: 'easeOut' as const
-    }
-  }
-};
-
-const optionVariants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: { 
-    opacity: 1, 
-    x: 0,
-    transition: { duration: 0.075 }
-  },
-  hover: {
-    backgroundColor: '#f5f5f5',
-    x: 0,
-    transition: { duration: 0.05 }
-  }
-};
 
 export function Dropdown({ options, value, onChange, placeholder = "Select...", disabled = false, className = "" }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);

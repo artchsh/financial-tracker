@@ -65,9 +65,9 @@ export default function BudgetHistoryCard({
       </div>
 
       {budget.categories.length > 0 && (
-        <motion.div layout className='flex flex-wrap gap-1'>
+        <motion.div layout className='flex gap-1 h-6 overflow-y-scroll scroll-smooth'>
           {budget.categories.slice(0, 5).map(cat => (
-            <CategoryTag key={cat.id} value={cat.name} color={cat.color} />
+            <CategoryTag key={cat.id} value={cat.name.split(" ").length > 1 ? cat.name.split(" ")[0] + "..." : cat.name} color={cat.color} />
           ))}
           {budget.categories.length > 5 && (
             <CategoryTag value={`+${budget.categories.length - 5} more`} />
