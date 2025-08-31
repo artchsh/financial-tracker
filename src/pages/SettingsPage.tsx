@@ -4,9 +4,9 @@ import { Download, FileText, Upload, Trash2 } from 'lucide-react';
 import { useApp } from '../context';
 import { CURRENCIES, AppSettings } from '../types';
 import { Dropdown } from '../components/Dropdown';
-import { ThemeToggle } from '../components/ThemeToggle';
 import VersionInfo from '../components/VersionInfo';
 import TopHeader from '@/components/top-header';
+import AppearanceCard from '@/components/cards/appearance-card';
 
 const settingsVariants = {
   hidden: { opacity: 0 },
@@ -224,17 +224,7 @@ export function SettingsPage() {
     >
       <TopHeader title='Settings'/>
 
-      {/* Currency Settings */}
-      <motion.div className="card" variants={cardVariants}>
-        <h2 className="mb-1 font-bold">Appearance</h2>
-        <div className="form-group">
-          <label className="form-label">Theme</label>
-          <ThemeToggle
-            theme={state.settings.theme}
-            onChange={handleThemeChange}
-          />
-        </div>
-      </motion.div>
+      <AppearanceCard theme={state.settings.theme} onThemeChange={handleThemeChange} />
 
       {/* Currency Settings */}
       <motion.div className="card" variants={cardVariants}>
