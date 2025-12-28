@@ -11,7 +11,6 @@ Improve readability, reusability, and maintainability by splitting large page co
   - `src/components/cards/monthly-limit-card.tsx`: Encapsulates the Monthly Limit card (edit/save logic, warning state).
   - `src/components/sections/categories-section.tsx`: Encapsulates the Categories section (header, add button, list rendering, empty state).
   - `src/components/cards/budget-history-card.tsx`: Encapsulates a single budget item in History.
-  - `src/components/cards/appearance-card.tsx`: Encapsulates Appearance/Theme selection card.
   - `src/components/cards/currency-card.tsx`: Encapsulates currency selection.
   - `src/components/cards/history-retention-card.tsx`: Encapsulates history retention settings.
   - `src/components/cards/data-management-card.tsx`: Encapsulates export/import/reset actions.
@@ -24,8 +23,8 @@ Improve readability, reusability, and maintainability by splitting large page co
 - Updated pages/components to use new components/utilities:
   - `src/pages/MainPage.tsx`: Replaced inline Monthly Limit and Categories rendering with `MonthlyLimitCard` and `CategoriesSection`. Summary card shows totals; removed unused `getFreeMoneyCssClass` import. Removed redundant UI code and unused imports.
   - `src/pages/HistoryPage.tsx`: Replaced inline history card rendering and helpers with `BudgetHistoryCard` and `formatMonth` from `utils/budget`. `freeMoney` is computed via existing app logic and passed to the card.
-  - `src/pages/SettingsPage.tsx`: Simplified using `AppearanceCard`, `CurrencyCard`, `HistoryRetentionCard`, and `DataManagementCard`. Moved export/download logic to `export-utils`. Uses shared `settingsVariants`/`cardVariants` from `utils/animations`.
-  - `src/components/cards/{appearance-card,currency-card,history-retention-card,data-management-card,summary-card}.tsx`: Updated to consume shared `cardVariants` from `utils/animations`.
+  - `src/pages/SettingsPage.tsx`: Simplified using `CurrencyCard`, `HistoryRetentionCard`, and `DataManagementCard`. Moved export/download logic to `export-utils`. Uses shared `settingsVariants`/`cardVariants` from `utils/animations`.
+  - `src/components/cards/{currency-card,history-retention-card,data-management-card,summary-card}.tsx`: Updated to consume shared `cardVariants` from `utils/animations`.
   - `src/components/VersionInfo.tsx`: Refactored to use `useVersionCheck` hook instead of custom fetch logic.
 
 ## Rationale and Notes
@@ -41,7 +40,6 @@ Improve readability, reusability, and maintainability by splitting large page co
 - `src/components/cards/monthly-limit-card.tsx`
 - `src/components/sections/categories-section.tsx`
 - `src/components/cards/budget-history-card.tsx`
-- `src/components/cards/appearance-card.tsx`
 - `src/components/cards/currency-card.tsx`
 - `src/components/cards/history-retention-card.tsx`
 - `src/components/cards/data-management-card.tsx`
@@ -54,7 +52,6 @@ Improve readability, reusability, and maintainability by splitting large page co
 - `src/pages/MainPage.tsx`
 - `src/pages/HistoryPage.tsx`
 - `src/pages/SettingsPage.tsx`
-- `src/components/cards/appearance-card.tsx`
 - `src/components/cards/currency-card.tsx`
 - `src/components/cards/history-retention-card.tsx`
 - `src/components/cards/data-management-card.tsx`
@@ -71,7 +68,7 @@ Improve readability, reusability, and maintainability by splitting large page co
 - History page:
   - Renders a list of budget history cards; clicking a card sets the current month.
 - Settings page:
-  - Appearance/Theme, Currency, History retention, and Data management work via their cards.
+  - Currency, History retention, and Data management work via their cards.
   - Export Data (JSON) downloads a .json backup; Export Summary (Text) downloads a .txt summary.
 - About section shows version via `useVersionCheck`; when a new version is available, it indicates an update.
 

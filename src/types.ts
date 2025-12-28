@@ -17,19 +17,18 @@ export interface MonthBudget {
 export interface AppSettings {
   currency: Currency;
   historyRetentionMonths: number;
-  theme: 'light' | 'dark' | 'system';
 }
 
 export interface Currency {
-  code: 'KZT' | 'USD' | 'RUB';
+  code: "KZT" | "USD" | "RUB";
   symbol: string;
   name: string;
 }
 
 export const CURRENCIES: Currency[] = [
-  { code: 'KZT', symbol: '₸', name: 'Kazakhstani Tenge' },
-  { code: 'USD', symbol: '$', name: 'US Dollar' },
-  { code: 'RUB', symbol: '₽', name: 'Russian Ruble' },
+  { code: "KZT", symbol: "₸", name: "Kazakhstani Tenge" },
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "RUB", symbol: "₽", name: "Russian Ruble" },
 ];
 
 export interface AppData {

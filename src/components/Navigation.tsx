@@ -1,9 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { PieChart, History, Settings } from 'lucide-react';
-import { div } from 'framer-motion/client';
+import React from "react";
+import { motion } from "framer-motion";
+import { PieChart, History, Settings } from "lucide-react";
 
-type Page = 'main' | 'history' | 'settings';
+type Page = "main" | "history" | "settings";
 
 interface NavigationProps {
   currentPage: Page;
@@ -14,42 +13,42 @@ const navItemVariants = {
   inactive: {
     scale: 1,
     opacity: 0.7,
-    transition: { duration: 0.1 }
+    transition: { duration: 0.1 },
   },
   active: {
     scale: 1.1,
     opacity: 1,
-    transition: { duration: 0.1 }
+    transition: { duration: 0.1 },
   },
   tap: {
     scale: 0.95,
-    transition: { duration: 0.05 }
-  }
+    transition: { duration: 0.05 },
+  },
 };
 
 const iconVariants = {
   inactive: { rotate: 0 },
   active: { rotate: [0, -10, 10, 0], transition: { duration: 0.25 } },
-  hover: { scale: 1.2, transition: { duration: 0.1 } }
+  hover: { scale: 1.2, transition: { duration: 0.1 } },
 };
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
   return (
-    <div className='bottom-nav-wrapper'>
+    <div className="bottom-nav-wrapper">
       <nav className="bottom-nav">
         <motion.button
-          className={`nav-item ${currentPage === 'main' ? 'active' : ''}`}
-          onClick={() => onPageChange('main')}
+          className={`nav-item ${currentPage === "main" ? "active" : ""}`}
+          onClick={() => onPageChange("main")}
           variants={navItemVariants}
           initial="inactive"
-          animate={currentPage === 'main' ? 'active' : 'inactive'}
+          animate={currentPage === "main" ? "active" : "inactive"}
           whileTap="tap"
           whileHover={{ scale: 1.05 }}
         >
           <motion.div
             className="nav-icon"
             variants={iconVariants}
-            animate={currentPage === 'main' ? 'active' : 'inactive'}
+            animate={currentPage === "main" ? "active" : "inactive"}
             whileHover="hover"
           >
             <PieChart size={24} />
@@ -58,18 +57,18 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         </motion.button>
 
         <motion.button
-          className={`nav-item ${currentPage === 'history' ? 'active' : ''}`}
-          onClick={() => onPageChange('history')}
+          className={`nav-item ${currentPage === "history" ? "active" : ""}`}
+          onClick={() => onPageChange("history")}
           variants={navItemVariants}
           initial="inactive"
-          animate={currentPage === 'history' ? 'active' : 'inactive'}
+          animate={currentPage === "history" ? "active" : "inactive"}
           whileTap="tap"
           whileHover={{ scale: 1.05 }}
         >
           <motion.div
             className="nav-icon"
             variants={iconVariants}
-            animate={currentPage === 'history' ? 'active' : 'inactive'}
+            animate={currentPage === "history" ? "active" : "inactive"}
             whileHover="hover"
           >
             <History size={24} />
@@ -78,18 +77,18 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         </motion.button>
 
         <motion.button
-          className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
-          onClick={() => onPageChange('settings')}
+          className={`nav-item ${currentPage === "settings" ? "active" : ""}`}
+          onClick={() => onPageChange("settings")}
           variants={navItemVariants}
           initial="inactive"
-          animate={currentPage === 'settings' ? 'active' : 'inactive'}
+          animate={currentPage === "settings" ? "active" : "inactive"}
           whileTap="tap"
           whileHover={{ scale: 1.05 }}
         >
           <motion.div
             className="nav-icon"
             variants={iconVariants}
-            animate={currentPage === 'settings' ? 'active' : 'inactive'}
+            animate={currentPage === "settings" ? "active" : "inactive"}
             whileHover="hover"
           >
             <Settings size={24} />
