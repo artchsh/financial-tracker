@@ -24,7 +24,7 @@ const cardVariants = {
     }
   },
   hover: {
-    scale: 1.02,
+    scale: 1.01,
     transition: {
       type: 'spring' as const,
       damping: 20,
@@ -43,6 +43,12 @@ const progressVariants = {
     }
   })
 };
+
+function getProgressBarClass(spentPercentage: number, isOverspent: boolean): string {
+  if (isOverspent) return 'danger';
+  if (spentPercentage > 80) return 'warning';
+  return 'success';
+}
 
 export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
   const { formatCurrency } = useApp();
@@ -80,75 +86,65 @@ export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) 
       whileHover="hover"
       layout
     >
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-1">
-          <motion.div
+      <div className="card-header mb-2">
+        <div className="flex items-center gap-2">
+          <span
+            className="flex-shrink-0"
             style={{
               width: '12px',
               height: '12px',
               backgroundColor: category.color,
               borderRadius: '50%'
             }}
-            whileHover={{ scale: 1.2 }}
-            transition={{ duration: 0.1 }}
           />
-          <h3 className="font-bold">{category.name}</h3>
+          <h3 className="card-title">{category.name}</h3>
         </div>
         <ActionMenu items={actionItems} />
       </div>
 
-      <motion.div className="flex flex-col gap-1" layout>
-        <div className="flex justify-between">
-          <span>Allocated:</span>
+      <div className="card-content">
+        <div className="data-row">
+          <span className="data-row-label">Allocated</span>
           <motion.span 
-            className="font-bold"
+            className="data-row-value"
             key={category.allocated}
-            initial={{ scale: 1.2, color: '#000' }}
-            animate={{ scale: 1, color: '#000' }}
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
             transition={{ duration: 0.15 }}
           >
             {formatCurrency(category.allocated)}
           </motion.span>
         </div>
-        <div className="flex justify-between">
-          <span>Spent:</span>
+        <div className="data-row">
+          <span className="data-row-label">Spent</span>
           <motion.span 
-            className={`${isOverspent ? 'font-bold text-danger' : ''}`}
+            className={`data-row-value ${isOverspent ? 'text-danger' : ''}`}
             key={category.spent}
-            initial={{ scale: 1.2 }}
+            initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.15 }}
           >
             {formatCurrency(category.spent)}
           </motion.span>
         </div>
-        <div className="flex justify-between">
-          <span>Remaining:</span>
+        <div className="data-row">
+          <span className="data-row-label">Remaining</span>
           <motion.span 
-            className={`font-bold ${remaining < 0 ? 'text-danger' : 'text-success'}`}
+            className={`data-row-value font-bold ${remaining < 0 ? 'text-danger' : 'text-success'}`}
             key={remaining}
-            initial={{ scale: 1.2 }}
+            initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.15 }}
           >
             {formatCurrency(remaining)}
           </motion.span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Progress Bar */}
-      <div style={{
-        width: '100%',
-        height: '8px',
-        backgroundColor: '#e0e0e0',
-        borderRadius: '4px',
-        overflow: 'hidden'
-      }}>
+      <div className="progress-bar">
         <motion.div
-          style={{
-            height: '100%',
-            backgroundColor: isOverspent ? '#dc3545' : spentPercentage > 80 ? '#ffc107' : '#28a745',
-          }}
+          className={`progress-bar-fill ${getProgressBarClass(spentPercentage, isOverspent)}`}
           variants={progressVariants}
           initial="initial"
           animate="animate"

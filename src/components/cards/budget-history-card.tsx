@@ -8,6 +8,15 @@ const cardVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.15 } }
 };
 
+interface BudgetHistoryCardProps {
+  budget: MonthBudget;
+  isCurrent: boolean;
+  onClick: () => void;
+  formatMonth: (m: string) => string;
+  formatCurrency: (n: number) => string;
+  freeMoney: number;
+}
+
 export default function BudgetHistoryCard({
   budget,
   isCurrent,
@@ -15,64 +24,58 @@ export default function BudgetHistoryCard({
   formatMonth,
   formatCurrency,
   freeMoney,
-}: {
-  budget: MonthBudget;
-  isCurrent: boolean;
-  onClick: () => void;
-  formatMonth: (m: string) => string;
-  formatCurrency: (n: number) => string;
-  freeMoney: number;
-}) {
+}: BudgetHistoryCardProps) {
   const totalAllocated = budget.categories.reduce((sum, cat) => sum + cat.allocated, 0);
   const totalSpent = budget.categories.reduce((sum, cat) => sum + cat.spent, 0);
 
   return (
     <motion.div
-      className="card"
-      style={{ border: isCurrent ? '1px solid #aaa' : '1px solid #e0e0e0', cursor: 'pointer' }}
+      className={`card card-clickable ${isCurrent ? 'card-highlight' : ''}`}
       onClick={onClick}
       variants={cardVariants}
-      whileHover={{ scale: 1.02, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transition: { duration: 0.1 } }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ scale: 1.01, transition: { duration: 0.1 } }}
+      whileTap={{ scale: 0.99 }}
     >
-      <div className="flex justify-between items-center">
-        <h2 className="font-bold">
-          {formatMonth(budget.month)}
-          {isCurrent && (
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 'normal', marginLeft: '0.5rem' }}>
-              (Current)
-            </span>
-          )}
-        </h2>
-        <span style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
-          {budget.categories.length} categor{budget.categories.length !== 1 ? 'ies' : 'y'}
+      <div className="card-header mb-2">
+        <div className="flex items-center gap-2">
+          <h3 className="card-title">{formatMonth(budget.month)}</h3>
+          {isCurrent && <span className="tag tag-current">Current</span>}
+        </div>
+        <span className="text-sm text-secondary">
+          {budget.categories.length} {budget.categories.length === 1 ? 'category' : 'categories'}
         </span>
       </div>
 
-      <div className="flex flex-col gap-0.5">
-        <div className="flex justify-between">
-          <span className="text-muted">Spent/Allocated:</span>
-          <span>{`${formatCurrency(totalSpent)}/${formatCurrency(totalAllocated)}`}</span>
+      <div className="card-content">
+        <div className="data-row">
+          <span className="data-row-label">Spent / Allocated</span>
+          <span className="data-row-value">{formatCurrency(totalSpent)} / {formatCurrency(totalAllocated)}</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-muted">Left:</span>
-          <span className={freeMoney < 0 ? 'text-danger' : 'text-success'}>{formatCurrency(freeMoney)}</span>
+        <div className="data-row">
+          <span className="data-row-label">Remaining</span>
+          <span className={`data-row-value ${freeMoney < 0 ? 'text-danger' : 'text-success'}`}>
+            {formatCurrency(freeMoney)}
+          </span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-muted">Unallocated money:</span>
-          <span>{formatCurrency(budget.spendingLimit - totalAllocated)}</span>
+        <div className="data-row">
+          <span className="data-row-label">Unallocated</span>
+          <span className="data-row-value">{formatCurrency(budget.spendingLimit - totalAllocated)}</span>
         </div>
       </div>
 
       {budget.categories.length > 0 && (
-        <motion.div layout className='flex gap-1 h-6 overflow-y-scroll scroll-smooth'>
-          {budget.categories.slice(0, 5).map(cat => (
-            <CategoryTag key={cat.id} value={cat.name.split(" ").length > 1 ? cat.name.split(" ")[0] + "..." : cat.name} color={cat.color} />
+        <div className="flex gap-1 mt-2 overflow-x-auto" style={{ paddingBottom: '2px' }}>
+          {budget.categories.slice(0, 4).map(cat => (
+            <CategoryTag 
+              key={cat.id} 
+              value={cat.name.length > 10 ? cat.name.substring(0, 8) + '...' : cat.name} 
+              color={cat.color} 
+            />
           ))}
-          {budget.categories.length > 5 && (
-            <CategoryTag value={`+${budget.categories.length - 5} more`} />
+          {budget.categories.length > 4 && (
+            <CategoryTag value={`+${budget.categories.length - 4}`} />
           )}
-        </motion.div>
+        </div>
       )}
     </motion.div>
   );

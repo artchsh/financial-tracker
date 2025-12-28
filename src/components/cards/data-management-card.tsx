@@ -3,6 +3,24 @@ import { motion } from "framer-motion";
 import { Download, FileText, Upload, Trash2 } from "lucide-react";
 import { cardVariants } from "@/utils/animations";
 
+interface DataManagementCardProps {
+  isExporting: boolean;
+  isImporting: boolean;
+  isClearing: boolean;
+  onExport: () => Promise<void> | void;
+  onExportFormatted: () => Promise<void> | void;
+  onImport: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
+  onClear: () => Promise<void> | void;
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return <h4 className="font-semibold text-base">{children}</h4>;
+}
+
+function SectionDescription({ children }: { children: React.ReactNode }) {
+  return <p className="text-sm text-secondary">{children}</p>;
+}
+
 export default function DataManagementCard({
   isExporting,
   isImporting,
@@ -11,33 +29,21 @@ export default function DataManagementCard({
   onExportFormatted,
   onImport,
   onClear,
-}: {
-  isExporting: boolean;
-  isImporting: boolean;
-  isClearing: boolean;
-  onExport: () => Promise<void> | void;
-  onExportFormatted: () => Promise<void> | void;
-  onImport: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
-  onClear: () => Promise<void> | void;
-}) {
+}: DataManagementCardProps) {
   return (
     <motion.div className="card" variants={cardVariants}>
-      <h2 className="font-bold">Data Management</h2>
+      <h3 className="card-title mb-2">Data Management</h3>
 
-      <motion.div layout className="flex flex-col gap-1">
+      <div className="card-content gap-3">
         {/* Export */}
-        <div className="">
-          <h3 className="font-bold" style={{ fontSize: "1rem" }}>
-            Export Data
-          </h3>
-          <p
-            style={{ fontSize: "0.9rem", color: "var(--color-text-secondary)" }}
-          >
-            Download all your budget data as a JSON file for backup or transfer.
-          </p>
-          <div className="grid grid-cols-2">
+        <div className="flex flex-col gap-1">
+          <SectionTitle>Export Data</SectionTitle>
+          <SectionDescription>
+            Download your budget data as a backup file.
+          </SectionDescription>
+          <div className="btn-group mt-1">
             <motion.button
-              className="flex justify-center items-center gap-1 bg-white border border-black rounded-l-lg h-10 text-black"
+              className="button btn-outline flex items-center justify-center gap-1"
               onClick={onExport}
               disabled={isExporting}
               whileHover={{ scale: 1.02 }}
@@ -53,7 +59,7 @@ export default function DataManagementCard({
               )}
             </motion.button>
             <motion.button
-              className="flex justify-center items-center gap-1 bg-black px-2 border border-black rounded-r-lg h-10 text-white"
+              className="button flex items-center justify-center gap-1"
               onClick={onExportFormatted}
               disabled={isExporting}
               whileHover={{ scale: 1.02 }}
@@ -72,19 +78,14 @@ export default function DataManagementCard({
         </div>
 
         {/* Import */}
-        <div className="flex flex-col gap-0.5">
-          <h3 className="font-bold" style={{ fontSize: "1rem" }}>
-            Import Data
-          </h3>
-          <p
-            style={{ fontSize: "0.9rem", color: "var(--color-text-secondary)" }}
-          >
-            Import budget data from a JSON file. This will replace all current
-            data.
-          </p>
+        <div className="flex flex-col gap-1">
+          <SectionTitle>Import Data</SectionTitle>
+          <SectionDescription>
+            Import data from a JSON file. This replaces all current data.
+          </SectionDescription>
           <motion.label
-            className="w-full button"
-            style={{ display: "block", textAlign: "center", cursor: "pointer" }}
+            className="button button-secondary flex items-center justify-center gap-1 mt-1"
+            style={{ cursor: "pointer" }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -92,10 +93,7 @@ export default function DataManagementCard({
               "Importing..."
             ) : (
               <>
-                <Upload
-                  size={16}
-                  style={{ display: "inline", marginRight: "0.5rem" }}
-                />
+                <Upload size={16} />
                 Import Data
               </>
             )}
@@ -110,17 +108,13 @@ export default function DataManagementCard({
         </div>
 
         {/* Clear Data */}
-        <div className="flex flex-col gap-0.5">
-          <h3 className="font-bold" style={{ fontSize: "1rem" }}>
-            Reset All Data
-          </h3>
-          <p
-            style={{ fontSize: "0.9rem", color: "var(--color-text-secondary)" }}
-          >
-            Permanently delete all budget data. This action cannot be undone.
-          </p>
+        <div className="flex flex-col gap-1">
+          <SectionTitle>Reset All Data</SectionTitle>
+          <SectionDescription>
+            Permanently delete all budget data. Cannot be undone.
+          </SectionDescription>
           <motion.button
-            className="flex gap-1 w-full button button-danger"
+            className="button button-danger flex items-center justify-center gap-1 mt-1"
             onClick={onClear}
             disabled={isClearing}
             whileHover={{ scale: 1.02 }}
@@ -136,7 +130,7 @@ export default function DataManagementCard({
             )}
           </motion.button>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

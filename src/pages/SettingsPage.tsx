@@ -137,7 +137,7 @@ export function SettingsPage() {
     <motion.div variants={settingsVariants} initial="hidden" animate="visible">
       <TopHeader title="Settings" />
 
-      <motion.div layout className="flex flex-col gap-1">
+      <motion.div layout className="flex flex-col gap-2">
         <CurrencyCard
           value={state.settings.currency.code}
           options={currencyOptions}

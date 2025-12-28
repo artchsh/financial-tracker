@@ -11,6 +11,18 @@ const summaryVariants = {
   }
 };
 
+interface MonthlyLimitCardProps {
+  value: number;
+  isOverAllocated: boolean;
+  totalAllocated: number;
+  onToggleEdit: () => void;
+  onSave: () => void;
+  editing: boolean;
+  input: string;
+  setInput: (v: string) => void;
+  formatCurrency: (n: number) => string;
+}
+
 export default function MonthlyLimitCard({
   value,
   isOverAllocated,
@@ -21,30 +33,19 @@ export default function MonthlyLimitCard({
   input,
   setInput,
   formatCurrency,
-}: {
-  value: number;
-  isOverAllocated: boolean;
-  totalAllocated: number;
-  onToggleEdit: () => void;
-  onSave: () => void;
-  editing: boolean;
-  input: string;
-  setInput: (v: string) => void;
-  formatCurrency: (n: number) => string;
-}) {
+}: MonthlyLimitCardProps) {
   return (
     <motion.div className="card" variants={summaryVariants}>
-      <div className="flex justify-between align-center">
-        <h2 className="font-bold">Monthly Limit</h2>
+      <div className="card-header">
+        <h3 className="card-title">Monthly Limit</h3>
         <motion.button
-          className="button"
-          style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', background: 'none', color: 'black' }}
+          className="btn-icon"
           onClick={onToggleEdit}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           title="Edit spending limit"
         >
-          <Edit3 size={16} />
+          <Edit3 size={18} />
         </motion.button>
       </div>
 
@@ -53,12 +54,12 @@ export default function MonthlyLimitCard({
           <motion.div
             key="edit"
             layout
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
           >
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <input
                 type="number"
                 className="input"
@@ -68,17 +69,17 @@ export default function MonthlyLimitCard({
                 min="0"
                 step="0.01"
               />
-              <button className="button" onClick={onSave}>Save</button>
+              <button className="button btn-sm" onClick={onSave}>Save</button>
             </div>
           </motion.div>
         ) : (
           <motion.div
             key="view"
             layout
-            initial={{ opacity: 0, y: -6 }}
+            initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.18 }}
-            className="font-large"
+            className="text-2xl font-bold"
           >
             {formatCurrency(value || 0)}
           </motion.div>
@@ -86,9 +87,9 @@ export default function MonthlyLimitCard({
       </motion.div>
 
       {isOverAllocated && (
-        <div className="mt-1 warning">
-          <AlertTriangle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
-          You've allocated {formatCurrency(totalAllocated - (value || 0))} more than your limit
+        <div className="warning mt-2">
+          <AlertTriangle size={16} className="inline mr-1" style={{ verticalAlign: 'text-bottom' }} />
+          Over-allocated by {formatCurrency(totalAllocated - (value || 0))}
         </div>
       )}
     </motion.div>

@@ -5,18 +5,16 @@ import { cardVariants } from '@/utils/animations';
 
 type Option = { value: string; label: string };
 
-export default function CurrencyCard({
-  value,
-  options,
-  onChange,
-}: {
+interface CurrencyCardProps {
   value: string;
   options: Option[];
   onChange: (code: string) => void;
-}) {
+}
+
+export default function CurrencyCard({ value, options, onChange }: CurrencyCardProps) {
   return (
     <motion.div className="card" variants={cardVariants}>
-      <h2 className="mb-1 font-bold">Currency</h2>
+      <h3 className="card-title mb-2">Currency</h3>
       <div className="form-group">
         <label className="form-label">Display Currency</label>
         <Dropdown options={options} value={value} onChange={onChange} />

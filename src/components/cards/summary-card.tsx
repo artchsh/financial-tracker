@@ -10,35 +10,35 @@ interface SummaryCardProps {
     currentBudget?: MonthBudget
 }
 
-export function GroupItem({ label, value }: { label: string, value: React.ReactNode }) {
+function DataRow({ label, value, valueClass }: { label: string, value: React.ReactNode, valueClass?: string }) {
     return (
-        <div className="flex justify-between w-full">
-            <span>{label}</span>
-            <span>{value}</span>
+        <div className="data-row">
+            <span className="data-row-label">{label}</span>
+            <span className={`data-row-value ${valueClass || ''}`}>{value}</span>
         </div>
     )
 }
 
 export default function SummaryCard({ formatCurrency, totalAllocated, totalSpent, freeMoney, currentBudget }: SummaryCardProps) {
+    const unallocated = (currentBudget?.spendingLimit || 0) - totalAllocated;
 
     return (
-        <motion.div
-            className="card"
-            variants={cardVariants}
-        >
-            <h2 className="font-bold">Summary</h2>
-            <div className="flex flex-col gap-0.5">
-                <GroupItem
-                    label="Spent/Allocated:"
-                    value={`${formatCurrency(totalSpent)}/${formatCurrency(totalAllocated)}`}
+        <motion.div className="card" variants={cardVariants}>
+            <h3 className="card-title mb-1">Summary</h3>
+            <div className="card-content">
+                <DataRow
+                    label="Spent / Allocated"
+                    value={`${formatCurrency(totalSpent)} / ${formatCurrency(totalAllocated)}`}
                 />
-                <GroupItem
-                    label="Left:"
+                <DataRow
+                    label="Remaining"
                     value={formatCurrency(freeMoney)}
+                    valueClass={freeMoney < 0 ? 'text-danger' : 'text-success'}
                 />
-                <GroupItem
-                    label="Unallocated money:"
-                    value={formatCurrency((currentBudget?.spendingLimit || 0) - totalAllocated)}
+                <DataRow
+                    label="Unallocated"
+                    value={formatCurrency(unallocated)}
+                    valueClass={unallocated < 0 ? 'text-danger' : ''}
                 />
             </div>
         </motion.div>

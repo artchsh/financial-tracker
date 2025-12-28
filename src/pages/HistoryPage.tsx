@@ -10,7 +10,7 @@ const historyVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.08
     }
   }
 };
@@ -46,24 +46,17 @@ export function HistoryPage() {
       <TopHeader title="Budget History" />
 
       {sortedBudgets.length === 0 ? (
-        <motion.div
-          className="text-muted text-center card"
-          variants={cardVariants}
-        >
-          <p>No budget history yet</p>
-          <p style={{ fontSize: '0.9rem' }}>Start creating budgets to see your history here</p>
+        <motion.div className="card empty-state" variants={cardVariants}>
+          <p className="empty-state-title">No budget history yet</p>
+          <p className="empty-state-description">Start creating budgets to see your history here</p>
         </motion.div>
       ) : (
-        <div>
-          <motion.p
-            className="text-muted"
-            style={{ marginBottom: '1rem' }}
-            variants={cardVariants}
-          >
+        <div className="flex flex-col gap-3">
+          <motion.p className="text-secondary text-sm" variants={cardVariants}>
             Showing {sortedBudgets.length} month{sortedBudgets.length !== 1 ? 's' : ''}
           </motion.p>
 
-          <motion.div layout className='flex flex-col gap-1'>
+          <motion.div layout className="flex flex-col gap-2">
             {sortedBudgets.map((budget) => (
               <BudgetHistoryCard
                 key={budget.month}
