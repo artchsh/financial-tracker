@@ -8,7 +8,7 @@ export default function VersionInfo() {
   if (!display) {
     return (
       <>
-        <p><strong>Financial Tracker PWA</strong></p>
+        <p><strong>Budget Planner & Tracker PWA</strong></p>
         <p>Loading version...</p>
       </>
     );
@@ -16,7 +16,7 @@ export default function VersionInfo() {
 
   return (
     <>
-      <p><strong>Financial Tracker PWA</strong></p>
+      <p><strong>Budget Planner & Tracker PWA</strong></p>
       <p>
         Version {display.version ?? 'Unknown'}
         {display.build ? ` — ${display.build}` : ''}

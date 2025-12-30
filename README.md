@@ -1,4 +1,4 @@
-# Financial Tracker PWA
+# Budget Planner & Tracker PWA
 
 A mobile-optimized Progressive Web App for personal budget tracking built with React, TypeScript, and Bun.
 
