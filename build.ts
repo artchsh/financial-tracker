@@ -173,11 +173,7 @@ try {
   console.log(`   Build: ${versionData.build}`);
   console.log(`   Timestamp: ${versionData.timestamp}`);
   
-  // Note: version.json will be copied to dist/public/ by the cp command in package.json
-  // We'll update the service worker in dist after the cp command runs
-  
   console.log("✅ Version info updated successfully\n");
-  console.log("⚠️  Note: Run 'npm run build' script to copy files and update service worker\n");
 } catch (error) {
   console.error("⚠️  Failed to update version.json:", error);
 }

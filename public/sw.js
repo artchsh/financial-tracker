@@ -4,6 +4,7 @@ const RUNTIME_CACHE = 'ft-runtime-v2';
 
 // Must match how the app serves the file (we serve it under /public/version.json)
 const VERSION_URL = '/public/version.json';
+const VERSION_PATHNAME = new URL(VERSION_URL, location.origin).pathname;
 
 // Build timestamp for cache-busting (will be replaced during build)
 const BUILD_TIMESTAMP = '__BUILD_TIMESTAMP__';
@@ -27,7 +28,7 @@ async function networkFirst(req) {
     // For version.json, add cache-busting query parameter
     let fetchUrl = req;
     const reqUrl = new URL(req.url || req);
-    if (reqUrl.pathname === new URL(VERSION_URL, location.origin).pathname) {
+    if (reqUrl.pathname === VERSION_PATHNAME) {
       // Add timestamp as query parameter to bypass cache
       const bustUrl = new URL(reqUrl);
       bustUrl.searchParams.set('t', BUILD_TIMESTAMP !== '__BUILD_TIMESTAMP__' ? BUILD_TIMESTAMP : Date.now().toString());
@@ -101,7 +102,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // Handle version file network-first to detect updates quickly
-  if (url.pathname === new URL(VERSION_URL, location.origin).pathname) {
+  if (url.pathname === VERSION_PATHNAME) {
     event.respondWith(networkFirst(request));
     return;
   }
