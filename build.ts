@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import plugin from "bun-plugin-tailwind";
 import { existsSync } from "fs";
-import { rm } from "fs/promises";
+import { rm, readFile, writeFile } from "fs/promises";
 import path from "path";
 
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
@@ -147,3 +147,33 @@ console.table(outputTable);
 const buildTime = (end - start).toFixed(2);
 
 console.log(`\n✅ Build completed in ${buildTime}ms\n`);
+
+// Update version.json with build timestamp and increment
+console.log("📝 Updating version.json...");
+try {
+  const versionPath = path.join(process.cwd(), "public", "version.json");
+  const versionContent = await readFile(versionPath, "utf-8");
+  const versionData = JSON.parse(versionContent);
+  
+  // Update timestamp
+  const now = new Date().toISOString();
+  versionData.timestamp = now;
+  
+  // Increment build number or add it if missing
+  if (versionData.build && /^\d+$/.test(versionData.build)) {
+    versionData.build = String(parseInt(versionData.build, 10) + 1);
+  } else {
+    versionData.build = "1";
+  }
+  
+  // Write back to source
+  await writeFile(versionPath, JSON.stringify(versionData, null, 2) + "\n", "utf-8");
+  
+  console.log(`   Version: ${versionData.version}`);
+  console.log(`   Build: ${versionData.build}`);
+  console.log(`   Timestamp: ${versionData.timestamp}`);
+  
+  console.log("✅ Version info updated successfully\n");
+} catch (error) {
+  console.error("⚠️  Failed to update version.json:", error);
+}
