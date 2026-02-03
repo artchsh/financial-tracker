@@ -72,7 +72,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
     } else {
       setName('');
       setAllocated('');
-      setSpent('0');
+      setSpent('');
       setColor(COLORS[Math.floor(Math.random() * COLORS.length)]);
     }
   }, [editingCategory, isOpen]);
@@ -165,6 +165,7 @@ export function CategoryModal({ isOpen, onClose, onSave, editingCategory }: Cate
             display: 'grid',
             gridTemplateColumns: 'repeat(5, 1fr)',
             gap: '0.5rem',
+            justifyContent: "space-between",
             marginTop: '0.5rem'
           }}>
             {COLORS.map((colorOption, index) => (

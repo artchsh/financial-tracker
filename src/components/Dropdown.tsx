@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { dropdownVariants, optionVariants } from '@/utils/animations';
 
@@ -78,10 +78,10 @@ export function Dropdown({ options, value, onChange, placeholder = "Select...", 
         {isOpen && (
           <motion.div
             className="dropdown-menu"
-            variants={dropdownVariants}
+            variants={dropdownVariants as unknown as Variants}
             initial="hidden"
             animate="visible"
-            exit="hidden"
+            exit="exit"
           >
             {options.map((option, index) => (
               <motion.button
@@ -89,7 +89,7 @@ export function Dropdown({ options, value, onChange, placeholder = "Select...", 
                 type="button"
                 className={`dropdown-option ${option.value === value ? 'selected' : ''}`}
                 onClick={() => handleSelect(option.value)}
-                variants={optionVariants}
+                variants={optionVariants  as unknown as Variants}
                 initial="hidden"
                 animate="visible"
                 whileHover="hover"

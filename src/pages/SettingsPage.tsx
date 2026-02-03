@@ -9,10 +9,10 @@ import HistoryRetentionCard from "@/components/cards/history-retention-card";
 import DataManagementCard from "@/components/cards/data-management-card";
 import {
   buildBackupJsonFilename,
-  buildSummaryTextFilename,
+  buildCsvFilename,
   downloadJsonFile,
-  downloadTextFile,
-  formatSummaryText,
+  downloadCsvFile,
+  formatBudgetsCsv,
 } from "@/utils/export-utils";
 import { settingsVariants, cardVariants } from "@/utils/animations";
 
@@ -58,14 +58,14 @@ export function SettingsPage() {
     { value: "36", label: "36 months" },
   ];
 
-  const handleExportFormatted = async () => {
+  const handleExportCsv = async () => {
     try {
       setIsExporting(true);
-      const text = formatSummaryText(state.budgets, formatCurrency);
-      downloadTextFile(buildSummaryTextFilename(), text);
-      alert("Formatted summary exported successfully!");
+      const csvContent = formatBudgetsCsv(state.budgets);
+      downloadCsvFile(buildCsvFilename(), csvContent);
+      alert("CSV exported successfully!");
     } catch (error) {
-      alert("Failed to export formatted summary");
+      alert("Failed to export CSV");
     } finally {
       setIsExporting(false);
     }
@@ -155,8 +155,8 @@ export function SettingsPage() {
           isExporting={isExporting}
           isImporting={isImporting}
           isClearing={isClearing}
-          onExport={handleExport}
-          onExportFormatted={handleExportFormatted}
+          onExportJson={handleExport}
+          onExportCsv={handleExportCsv}
           onImport={handleImport}
           onClear={handleClearData}
         />
