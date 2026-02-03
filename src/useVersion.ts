@@ -38,7 +38,9 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
 
   async function fetchVersion(): Promise<VersionInfo | null> {
     try {
-      const res = await fetch('/public/version.json', { cache: 'no-store' });
+      // Add cache-busting query parameter to ensure fresh data
+      const url = `/public/version.json?t=${Date.now()}`;
+      const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) return null;
       return (await res.json()) as VersionInfo;
     } catch {
@@ -51,8 +53,35 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
       if (typeof window === 'undefined') return null;
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return null;
-      return JSON.parse(raw) as VersionInfo;
-    } catch {
+      const stored = JSON.parse(raw) as VersionInfo;
+      
+      // Validate stored version data
+      if (!stored.version || typeof stored.version !== 'string') {
+        console.warn('Invalid version data in localStorage, clearing...');
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+      }
+      
+      // Check if stored version is significantly outdated (more than 90 days)
+      if (stored.timestamp) {
+        const storedTime = new Date(stored.timestamp).getTime();
+        const now = Date.now();
+        const daysDiff = (now - storedTime) / (1000 * 60 * 60 * 24);
+        
+        if (daysDiff > 90) {
+          console.warn('Stored version is significantly outdated (>90 days), clearing...');
+          localStorage.removeItem(STORAGE_KEY);
+          return null;
+        }
+      }
+      
+      return stored;
+    } catch (error) {
+      // Corrupted localStorage data - clear it
+      console.warn('Error reading stored version, clearing localStorage:', error);
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {}
       return null;
     }
   }
@@ -86,7 +115,26 @@ export function useVersionCheck(options?: { intervalMs?: number }) {
           setCurrent(latest);
           setUpdateAvailable(false);
         } else {
-          setUpdateAvailable(isRemoteGreater(latest.version, stored.version));
+          // Check for inconsistencies between stored and remote
+          const isGreater = isRemoteGreater(latest.version, stored.version);
+          
+          // Additional check: if timestamps are inconsistent, clear and reset
+          if (stored.timestamp && latest.timestamp) {
+            const storedTime = new Date(stored.timestamp).getTime();
+            const remoteTime = new Date(latest.timestamp).getTime();
+            
+            // If stored timestamp is newer than remote but versions don't match,
+            // there's an inconsistency - clear and reset
+            if (storedTime > remoteTime && stored.version !== latest.version) {
+              console.warn('Version timestamp inconsistency detected, resetting...');
+              writeStoredVersion(latest);
+              setCurrent(latest);
+              setUpdateAvailable(false);
+              return;
+            }
+          }
+          
+          setUpdateAvailable(isGreater);
         }
       }
     })();

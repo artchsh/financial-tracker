@@ -5,6 +5,9 @@ const RUNTIME_CACHE = 'ft-runtime-v2';
 // Must match how the app serves the file (we serve it under /public/version.json)
 const VERSION_URL = '/public/version.json';
 
+// Build timestamp for cache-busting (will be replaced during build)
+const BUILD_TIMESTAMP = '__BUILD_TIMESTAMP__';
+
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -21,7 +24,22 @@ const STATIC_ASSETS = [
 // Utility: fetch with network-first and fallback to cache
 async function networkFirst(req) {
   try {
-    const res = await fetch(req);
+    // For version.json, add cache-busting query parameter
+    let fetchUrl = req;
+    const reqUrl = new URL(req.url || req);
+    if (reqUrl.pathname === new URL(VERSION_URL, location.origin).pathname) {
+      // Add timestamp as query parameter to bypass cache
+      const bustUrl = new URL(reqUrl);
+      bustUrl.searchParams.set('t', BUILD_TIMESTAMP !== '__BUILD_TIMESTAMP__' ? BUILD_TIMESTAMP : Date.now().toString());
+      fetchUrl = new Request(bustUrl.toString(), {
+        method: req.method,
+        headers: req.headers,
+        mode: req.mode,
+        credentials: req.credentials,
+        cache: 'no-store',
+      });
+    }
+    const res = await fetch(fetchUrl);
     const cache = await caches.open(RUNTIME_CACHE);
     cache.put(req, res.clone());
     return res;
@@ -45,7 +63,18 @@ async function cacheFirst(req) {
 self.addEventListener('install', (event) => {
   // Do not auto-activate the new SW; wait for user action via SKIP_WAITING
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS.filter(Boolean))).catch(() => {})
+    caches.open(STATIC_CACHE).then((cache) => {
+      // Add cache-busting for version.json during install
+      const assetsToCache = STATIC_ASSETS.filter(Boolean).map(url => {
+        if (url === VERSION_URL) {
+          const bustUrl = new URL(url, location.origin);
+          bustUrl.searchParams.set('t', BUILD_TIMESTAMP !== '__BUILD_TIMESTAMP__' ? BUILD_TIMESTAMP : Date.now().toString());
+          return bustUrl.toString();
+        }
+        return url;
+      });
+      return cache.addAll(assetsToCache);
+    }).catch(() => {})
   );
 });
 
@@ -114,10 +143,12 @@ self.addEventListener('message', async (event) => {
   const { type } = event.data || {};
   if (type === 'SKIP_WAITING') {
     await self.skipWaiting();
-    // Try to include the latest version payload for clients
+    // Try to include the latest version payload for clients with cache-busting
     let versionPayload = null;
     try {
-      const res = await fetch(VERSION_URL, { cache: 'no-store' });
+      const versionUrl = new URL(VERSION_URL, location.origin);
+      versionUrl.searchParams.set('t', BUILD_TIMESTAMP !== '__BUILD_TIMESTAMP__' ? BUILD_TIMESTAMP : Date.now().toString());
+      const res = await fetch(versionUrl.toString(), { cache: 'no-store' });
       if (res.ok) versionPayload = await res.json();
     } catch {}
 
